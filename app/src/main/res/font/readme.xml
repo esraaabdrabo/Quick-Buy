@@ -1,0 +1,90 @@
+<!--# 🧩 Adding Poppins Font to Android (Jetpack Compose)-->
+
+<!--This project uses **Poppins** as the primary font family.-->
+<!--Follow the steps below to set it up correctly for Jetpack Compose typography.-->
+
+<!-- -&#45;&#45;-->
+
+<!--## 📁 Font Files-->
+
+<!--We’re using two weights from the Poppins family:-->
+
+<!-- - **`poppins_regular.ttf`** → Normal weight (for general text)-->
+<!-- - **`poppins_medium.ttf`** → Medium weight (for headers, buttons, etc.)-->
+
+<!--These are both `.ttf` (TrueType Font) files — think of them like `.png` files but for text.-->
+<!--They define how your letters look inside the app.-->
+
+<!-- -&#45;&#45;-->
+
+<!--## 🗂️ Where to Get the Fonts-->
+
+<!--Download them directly from **[Google Fonts → Poppins](https://fonts.google.com/specimen/Poppins)**-->
+
+<!--1. Click **“Download family”**-->
+<!--2. Extract the `.zip` file-->
+<!--3. Inside, locate these files:-->
+<!--```-->
+
+<!--Poppins-Regular.ttf-->
+<!--Poppins-Medium.ttf-->
+
+<!--```-->
+<!--4. (Optional) Rename them for consistency:-->
+<!--```-->
+
+<!--poppins_regular.ttf-->
+<!--poppins_medium.ttf-->
+
+<!--```-->
+
+<!-- -&#45;&#45;-->
+
+<!--## 📦 Where to Put Them-->
+
+<!--Create a folder under your `res` directory called **`font`** (if it doesn’t exist):-->
+
+<!--```-->
+
+<!--app/-->
+<!--└─ src/-->
+<!--└─ main/-->
+<!--└─ res/-->
+<!--└─ font/-->
+<!--├─ poppins_regular.ttf-->
+<!--└─ poppins_medium.ttf-->
+
+<!--````-->
+
+<!--Android Studio will automatically detect them as font resources (if not, rebuild once).-->
+
+<!-- -&#45;&#45;-->
+
+<!--## 🧠 Using Them in Jetpack Compose-->
+
+<!--Declare the font family in your `Type.kt`:-->
+
+<!--```kotlin-->
+<!--import androidx.compose.ui.text.font.Font-->
+<!--import androidx.compose.ui.text.font.FontFamily-->
+<!--import androidx.compose.ui.text.font.FontWeight-->
+<!--import com.yourapp.R-->
+
+<!--val Poppins = FontFamily(-->
+<!--    Font(R.font.poppins_regular, FontWeight.Normal),-->
+<!--    Font(R.font.poppins_medium, FontWeight.Medium)-->
+<!--)-->
+<!--````-->
+
+<!--Then use it anywhere in your composables:-->
+
+<!--```kotlin-->
+<!--Text(-->
+<!--    text = "Shop Now",-->
+<!--    style = TextStyle(-->
+<!--        fontFamily = Poppins,-->
+<!--        fontWeight = FontWeight.Medium,-->
+<!--        fontSize = 20.sp-->
+<!--    )-->
+<!--)-->
+<!--```-->

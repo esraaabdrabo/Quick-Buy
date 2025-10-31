@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="royal_blue_30">#4D004182</color>
+    <color name="primary">#FF06004F</color>
+    <color name="secondary">#FF004182</color>
+    <color name="deep_indigo_description">#FF06004f</color>
+    <color name="white">#FF000000</color>
+    <color name="deep_indigo">#FF06004f</color>
+    <color name="light_grey">#B3000000</color>
+</resources>

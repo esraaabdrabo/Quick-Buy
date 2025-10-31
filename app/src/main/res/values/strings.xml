@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">QuickBuy</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="categories">Categories</string>
+    <string name="home">Home</string>
+    <string name="wishlist">WishList</string>
+    <string name="profile">Profile</string>
+</resources>
