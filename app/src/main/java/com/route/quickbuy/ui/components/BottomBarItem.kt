@@ -14,7 +14,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.route.quickbuy.BottomBarItems
 import com.route.quickbuy.ui.theme.onPrimary
 import com.route.quickbuy.ui.theme.primary
 import com.route.quickbuy.ui.theme.white
