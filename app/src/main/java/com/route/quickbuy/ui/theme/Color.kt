@@ -10,7 +10,7 @@ val onPrimary = Color(0xFFFFFFFF)
 val onSecondary = Color(0xFFFFFFFF)
 
 val deep_indigo = Color(0xFF06004f)
-val white = Color(0x00FFFFFF)
+val white = Color(0xFFFFFFFF)
 val light_grey = Color(0xB3000000)
 
 

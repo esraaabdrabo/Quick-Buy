@@ -1,0 +1,111 @@
+package com.route.quickbuy.screens
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.route.quickbuy.R
+import com.route.quickbuy.ui.theme.QuickBuyTheme
+import com.route.quickbuy.ui.theme.primary
+import com.route.quickbuy.ui.theme.white
+
+
+class SplashActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContent {
+            QuickBuyTheme {
+                SplashBody()
+            }
+        }
+    }
+}
+
+
+@Composable
+fun SplashBody() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(primary),
+        verticalArrangement = Arrangement.SpaceBetween,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+
+        backgroundGradient(
+            colors = listOf(
+                white.copy(alpha = .4f),
+                primary.copy(alpha = .5f)
+            ),
+            Modifier
+                .weight(1f),
+        )
+        Box(
+            modifier = Modifier
+                .weight(1f)
+                .padding(horizontal = 32.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_white_logo),
+                contentDescription = "Route Logo",
+                alignment = Alignment.Center,
+                modifier = Modifier.scale(3f)
+            )
+        }
+        backgroundGradient(
+            colors = listOf(
+                primary.copy(alpha = .5f),
+                white.copy(alpha = .4f),
+            ),
+            Modifier
+                .weight(1f),
+        )
+
+
+    }
+}
+
+
+@Composable
+fun backgroundGradient(colors: List<Color>, modifier: Modifier) {
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .background(
+                Brush.verticalGradient(
+                    colors
+
+                )
+            )
+            .blur(150.dp)
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun SplashBodyPreview() {
+    QuickBuyTheme {
+        SplashBody()
+    }
+}

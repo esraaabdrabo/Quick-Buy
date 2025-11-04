@@ -5,4 +5,5 @@
     <string name="home">Home</string>
     <string name="wishlist">WishList</string>
     <string name="profile">Profile</string>
+    <string name="title_activity_splash">SplashActivity</string>
 </resources>
