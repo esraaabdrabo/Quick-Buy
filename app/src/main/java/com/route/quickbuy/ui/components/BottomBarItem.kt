@@ -1,13 +1,11 @@
 package com.route.quickbuy.ui.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,7 +14,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.route.quickbuy.ui.theme.onPrimary
 import com.route.quickbuy.ui.theme.primary
-import com.route.quickbuy.ui.theme.white
 
 @Composable
 fun BottomBarItem(
@@ -42,15 +39,7 @@ fun BottomBarItem(
     {
         Icon(
             modifier = Modifier.Companion
-                .size(40.dp)
-                .border(
-                    width = 1.dp,
-                    color = white,
-                    shape = RoundedCornerShape(
-                        200.dp
-                    )
-
-                ),
+                .size(40.dp),
             painter = painterResource(item.iconID),
             contentDescription = item.name,
             tint =
