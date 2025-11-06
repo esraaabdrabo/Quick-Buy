@@ -1,9 +1,5 @@
 package com.route.quickbuy.screens
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -12,7 +8,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
@@ -22,31 +20,28 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.route.quickbuy.BaseHomeDestination
 import com.route.quickbuy.R
+import com.route.quickbuy.SplashDestination
 import com.route.quickbuy.ui.theme.QuickBuyTheme
 import com.route.quickbuy.ui.theme.primary
 import com.route.quickbuy.ui.theme.white
-
-
-class SplashActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            QuickBuyTheme {
-                SplashBody()
-            }
-        }
-    }
-}
+import kotlinx.coroutines.delay
 
 
 @Composable
-fun SplashBody() {
+fun SplashScreen(navController: NavHostController) {
+    LaunchedEffect(Unit) {
+        delay(2000)
+        navController.popBackStack(SplashDestination, true)
+        navController.navigate(BaseHomeDestination)
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(primary),
+            .background(MaterialTheme.colorScheme.primary),
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -106,6 +101,6 @@ fun backgroundGradient(colors: List<Color>, modifier: Modifier) {
 @Composable
 fun SplashBodyPreview() {
     QuickBuyTheme {
-        SplashBody()
+        SplashScreen(rememberNavController())
     }
 }
