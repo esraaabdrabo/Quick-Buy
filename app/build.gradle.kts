@@ -61,13 +61,17 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    implementation("androidx.compose.material3:material3:<latest>")
-    implementation("androidx.compose.material:material-icons-extended:1.7.7")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.material.icons.extended)
+    implementation(libs.kotlinx.serialization.json)
 
     implementation(libs.androidx.navigation.compose)
     implementation(libs.hilt.android)
-    ksp("com.google.dagger:hilt-android-compiler:2.57.1")
+    ksp(libs.hilt.android.compiler)
+    implementation(libs.androidx.hilt.navigation.fragment)
+
+    implementation(project(":data"))
+    implementation(project(":domain"))
 
 
 }

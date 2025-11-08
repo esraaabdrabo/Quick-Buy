@@ -15,7 +15,7 @@ kotlin {
 dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
-    implementation(libs.retrofit)
-    implementation(libs.gson)
-    implementation("com.squareup.okhttp3:logging-interceptor:5.3.0")
+    implementation(libs.retrofit.v290)
+    implementation(libs.converter.gson)
+    implementation(libs.logging.interceptor)
 }
