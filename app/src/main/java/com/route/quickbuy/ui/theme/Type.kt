@@ -1,6 +1,5 @@
 package com.route.quickbuy.ui.theme
 
-import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -18,6 +17,16 @@ val Typography = androidx.compose.material3.Typography(
         fontFamily = Poppins,
         fontWeight = FontWeight.Normal,
         fontSize = 14.sp
+    ),
+    bodyMedium = TextStyle(
+        fontFamily = Poppins,
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.sp
+    ),
+    bodySmall = TextStyle(
+        fontFamily = Poppins,
+        fontWeight = FontWeight.Normal,
+        fontSize = 11.sp
     ),
     titleMedium = TextStyle(
         fontFamily = Poppins,

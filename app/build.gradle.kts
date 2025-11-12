@@ -66,10 +66,12 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
 
     implementation(libs.androidx.navigation.compose)
+
+//hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
     implementation(libs.androidx.hilt.navigation.fragment)
-
+ 
     implementation(project(":data"))
     implementation(project(":domain"))
 

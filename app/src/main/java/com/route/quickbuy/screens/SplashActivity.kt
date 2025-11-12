@@ -38,46 +38,48 @@ fun SplashScreen(navController: NavHostController) {
         navController.popBackStack(SplashDestination, true)
         navController.navigate(BaseHomeDestination)
     }
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.primary),
-        verticalArrangement = Arrangement.SpaceBetween,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-
-
-        backgroundGradient(
-            colors = listOf(
-                white.copy(alpha = .4f),
-                primary.copy(alpha = .5f)
-            ),
-            Modifier
-                .weight(1f),
-        )
-        Box(
+    QuickBuyTheme {
+        Column(
             modifier = Modifier
-                .weight(1f)
-                .padding(horizontal = 32.dp),
-            contentAlignment = Alignment.Center
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.primary),
+            verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_white_logo),
-                contentDescription = "Route Logo",
-                alignment = Alignment.Center,
-                modifier = Modifier.scale(3f)
+
+
+            backgroundGradient(
+                colors = listOf(
+                    white.copy(alpha = .4f),
+                    primary.copy(alpha = .5f)
+                ),
+                Modifier
+                    .weight(1f),
             )
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(horizontal = 32.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_white_logo),
+                    contentDescription = "Route Logo",
+                    alignment = Alignment.Center,
+                    modifier = Modifier.scale(3f)
+                )
+            }
+            backgroundGradient(
+                colors = listOf(
+                    primary.copy(alpha = .5f),
+                    white.copy(alpha = .4f),
+                ),
+                Modifier
+                    .weight(1f),
+            )
+
+
         }
-        backgroundGradient(
-            colors = listOf(
-                primary.copy(alpha = .5f),
-                white.copy(alpha = .4f),
-            ),
-            Modifier
-                .weight(1f),
-        )
-
-
     }
 }
 
