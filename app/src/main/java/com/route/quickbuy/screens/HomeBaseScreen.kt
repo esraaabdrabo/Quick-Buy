@@ -12,7 +12,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.route.quickbuy.screens.products.ProductCard
+import com.route.domain.entities.productList
+import com.route.quickbuy.screens.products.ProductsScreen
 import com.route.quickbuy.ui.components.AppBottomBar
 import com.route.quickbuy.ui.components.BottomBarItems
 
@@ -49,8 +50,7 @@ fun Body(
     {
         when (selectedItem) {
             BottomBarItems.Home -> {
-                ProductCard()
-                    
+                ProductsScreen(products = productList)
             }
 
             BottomBarItems.Category -> {

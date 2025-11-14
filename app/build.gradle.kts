@@ -71,9 +71,13 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
     implementation(libs.androidx.hilt.navigation.fragment)
- 
+
     implementation(project(":data"))
     implementation(project(":domain"))
+
+    //Network image
+    implementation("io.coil-kt.coil3:coil-compose:3.1.0")
+    implementation("io.coil-kt.coil3:coil-network-okhttp:3.1.0")
 
 
 }

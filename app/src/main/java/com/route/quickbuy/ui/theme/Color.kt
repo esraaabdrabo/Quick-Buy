@@ -14,4 +14,6 @@ val white = Color(0xFFFFFFFF)
 val light_grey = Color(0xB3000000)
 
 
-val lightBlue = Color(0xff004182)
+val lightBlue = Color(0xff004182).copy(.3f)
+val gold = Color(0xffFDD835)
+val error = Color(0xffFF6B68)
