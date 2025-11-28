@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.route.data"
+    namespace = "com.route.domain"
     compileSdk = 36 // Correct usage
 
     defaultConfig {
@@ -45,5 +45,6 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0") // use the latest version
+
 
 }

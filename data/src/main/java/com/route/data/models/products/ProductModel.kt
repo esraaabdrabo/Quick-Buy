@@ -1,4 +1,4 @@
-package com.route.data.models
+package com.route.data.models.products
 
 
 import android.os.Parcelable
@@ -6,14 +6,14 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class ProductModel(
-    val sold: Int? = null,
+    val sold: Double? = null,
     val images: List<String?>? = null,
     val quantity: Int? = null,
     val imageCover: String? = null,
     val description: String? = null,
     val title: String? = null,
     val ratingsQuantity: Int? = null,
-    val ratingsAverage: Int? = null,
+    val ratingsAverage: Double? = null,
     val createdAt: String? = null,
     val price: Int? = null,
     val id: String? = null,

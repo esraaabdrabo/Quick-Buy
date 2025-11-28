@@ -14,16 +14,16 @@ import com.route.quickbuy.ui.theme.error
 @Composable
 fun AppNetworkImage(
     url: String,
-    modifier: Modifier = Modifier.Companion,
+    modifier: Modifier = Modifier,
     contentDescription: String = "Image",
-    scale: ContentScale = ContentScale.Companion.FillBounds
+    scale: ContentScale = ContentScale.FillBounds
 ) {
     SubcomposeAsyncImage(
         modifier = modifier,
         model = url,
         contentDescription = contentDescription,
         loading = {
-            CircularProgressIndicator(modifier = Modifier.Companion.align(Alignment.Companion.Center))
+            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
         },
         error = {
             Icon(
