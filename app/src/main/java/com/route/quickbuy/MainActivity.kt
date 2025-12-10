@@ -15,9 +15,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.route.domain.entities.productList
-import com.route.quickbuy.screens.HomeBaseScreen
-import com.route.quickbuy.screens.SplashScreen
-import com.route.quickbuy.screens.products.ProductDetailScreen
+import com.route.quickbuy.features.HomeBaseScreen
+import com.route.quickbuy.features.SplashScreen
+import com.route.quickbuy.features.products.screens.ProductDetailScreen
 import com.route.quickbuy.ui.theme.QuickBuyTheme
 import dagger.hilt.android.AndroidEntryPoint
 
