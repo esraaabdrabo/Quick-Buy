@@ -22,9 +22,7 @@ data class ProductModel(
     val brand: BrandModel? = null,
     val slug: String? = null,
     val updatedAt: String? = null
-) : Parcelable {
-
-}
+) : Parcelable
 //
 //{
 //    "sold": 22207,

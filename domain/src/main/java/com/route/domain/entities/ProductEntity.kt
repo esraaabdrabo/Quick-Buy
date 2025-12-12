@@ -26,8 +26,7 @@ data class PaginationResponse<T>(
     val data: T,
 )
 
-val
-        productList = listOf(
+val productList = listOf(
     ProductEntity(
         id = "44c3cb8f-6688-400c-8923-0b0252b5de95",
         name = "Ross-Garza",

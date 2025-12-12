@@ -18,6 +18,6 @@ data object BaseHomeDestination
 data object ProductsDestination
 
 @Serializable
-data object ProductDetailDestination
+data class ProductDetailDestination(val id: String? = null)
 
 

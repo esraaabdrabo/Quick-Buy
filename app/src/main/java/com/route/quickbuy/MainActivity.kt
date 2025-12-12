@@ -14,7 +14,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.route.domain.entities.productList
 import com.route.quickbuy.features.HomeBaseScreen
 import com.route.quickbuy.features.SplashScreen
 import com.route.quickbuy.features.products.screens.ProductDetailScreen
@@ -47,9 +46,8 @@ class MainActivity : ComponentActivity() {
                             composable<BaseHomeDestination>() {
                                 HomeBaseScreen()
                             }
-                            composable<ProductDetailDestination> {
-                                //should i really pass a value here?
-                                ProductDetailScreen(product = productList.first())
+                            composable<ProductDetailDestination> { param ->
+                                ProductDetailScreen(id = param.arguments!!.getString("id") ?: "")
                             }
                         }
                     }
