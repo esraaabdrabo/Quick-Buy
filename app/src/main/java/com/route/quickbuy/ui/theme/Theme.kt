@@ -38,6 +38,7 @@ fun QuickBuyTheme(
     MaterialTheme(
         colorScheme = colorScheme,
         typography = Typography,
-        content = content
-    )
+        content = content,
+
+        )
 }

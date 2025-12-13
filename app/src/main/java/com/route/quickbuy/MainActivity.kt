@@ -14,6 +14,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.route.quickbuy.core.services.ConnectivityObserver
 import com.route.quickbuy.features.HomeBaseScreen
 import com.route.quickbuy.features.SplashScreen
 import com.route.quickbuy.features.products.screens.ProductDetailScreen
@@ -24,6 +25,10 @@ val navController = compositionLocalOf<NavHostController> {
     error("No NavHostController")
 }
 
+val connectivityObserver = compositionLocalOf<ConnectivityObserver> {
+    error("No ConnectivityObserver")
+}
+
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,23 +36,27 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             QuickBuyTheme {
-                CompositionLocalProvider(navController provides rememberNavController()) {
+                CompositionLocalProvider(connectivityObserver provides ConnectivityObserver(this)) {
+                    CompositionLocalProvider(navController provides rememberNavController()) {
 
 
-                    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                        NavHost(
-                            navController = navController.current,
-                            modifier = Modifier.padding(innerPadding),
-                            startDestination = SplashDestination
-                        ) {
-                            composable<SplashDestination>() {
-                                SplashScreen(navController = navController.current)
-                            }
-                            composable<BaseHomeDestination>() {
-                                HomeBaseScreen()
-                            }
-                            composable<ProductDetailDestination> { param ->
-                                ProductDetailScreen(id = param.arguments!!.getString("id") ?: "")
+                        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                            NavHost(
+                                navController = navController.current,
+                                modifier = Modifier.padding(innerPadding),
+                                startDestination = SplashDestination
+                            ) {
+                                composable<SplashDestination>() {
+                                    SplashScreen(navController = navController.current)
+                                }
+                                composable<BaseHomeDestination>() {
+                                    HomeBaseScreen()
+                                }
+                                composable<ProductDetailDestination> { param ->
+                                    ProductDetailScreen(
+                                        id = param.arguments!!.getString("id") ?: ""
+                                    )
+                                }
                             }
                         }
                     }

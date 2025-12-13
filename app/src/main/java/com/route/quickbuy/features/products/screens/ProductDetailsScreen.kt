@@ -1,13 +1,14 @@
 package com.route.quickbuy.features.products.screens
 
-import ProductsRepoImpl
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -16,173 +17,227 @@ import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material.icons.filled.StarRate
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableIntState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.route.data.dataSources.products.ProductsRemoteDataSourceImpl
-import com.route.domain.entities.ProductDetailsEntity
-import com.route.domain.usecases.products.GetProductDetailsUseCase
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.route.quickbuy.core.AppNetworkImage
+import com.route.quickbuy.core.ShoppingCartHeaderIcon
+import com.route.quickbuy.features.products.states.details.DataState
+import com.route.quickbuy.features.products.states.details.ErrorState
+import com.route.quickbuy.features.products.states.details.LoadingState
+import com.route.quickbuy.features.products.states.details.ProductDetailsViewModel
+import com.route.quickbuy.navController
 import com.route.quickbuy.ui.theme.royal_blue_30
 
-open class ProductDetailsState {}
 
-class ProductDetailsLoadingState : ProductDetailsState()
-data class ProductDetailsErrorState(val error: String) : ProductDetailsState()
-data class ProductDetailsDataState(val product: ProductDetailsEntity) : ProductDetailsState()
-
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductDetailScreen(id: String) {
-    Log.e("id", id)
-    val getProductDetailsUseCase =
-        GetProductDetailsUseCase(ProductsRepoImpl(ProductsRemoteDataSourceImpl()))
 
-    val state = remember { mutableStateOf(ProductDetailsState()) }
-    LaunchedEffect(1)
-    {
-        state.value = ProductDetailsLoadingState()
-        try {
-            val details = getProductDetailsUseCase.invoke(id)
-            state.value = ProductDetailsDataState(details)
-        } catch (e: Exception) {
-            state.value = ProductDetailsErrorState(e.message ?: "Unknown Error")
-        }
+    val viewModel: ProductDetailsViewModel = viewModel()
+
+
+    val state by viewModel.state
+
+
+    LaunchedEffect(id) {
+        viewModel.getProductDetails(id)
     }
+    val colorSchema = MaterialTheme.colorScheme
+    Scaffold(
+        topBar = {
+            CenterAlignedTopAppBar(
+                navigationIcon = {
+                    val navController = navController.current
+                    IconButton(
+                        onClick = {
+                            navController.popBackStack()
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back",
+                            tint = colorSchema.primary
 
-    when (state.value) {
-        is ProductDetailsLoadingState -> {
-            CircularProgressIndicator()
-        }
+                        )
 
-        is ProductDetailsErrorState -> {
-            Text(state.value.toString())
-        }
+                    }
+                },
+                title = {
+                    Text(
+                        "Product Details",
 
-        is ProductDetailsDataState -> {
-            val productDetails = (state.value as ProductDetailsDataState).product
-            val images: List<String?>? = productDetails.images
-            val pagerState = remember {
-                PagerState(currentPage = 0, pageCount = { images?.size ?: 0 })
-            }
-            state.value = ProductDetailsDataState(productDetails)
-
-            val orderCount = remember {
-                mutableIntStateOf(1)
-            }
-
-            Column(Modifier.padding(16.dp)) {
-                val colorSchema = MaterialTheme.colorScheme
-                HorizontalPager(
-                    pagerState,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(200.dp)
-                        .border(
-                            1.dp, royal_blue_30, RoundedCornerShape(
-                                15.dp
+                        style =
+                            MaterialTheme.typography.titleMedium.copy(
+                                color = colorSchema.primary
                             )
-                        ),
+                    )
+                },
+                actions = {
+                    ShoppingCartHeaderIcon()
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = colorSchema.onPrimary
+                )
+            )
+        },
+        content = { paddingValues ->
+            Box(
+                modifier = Modifier
+                    .padding(paddingValues)
+                    .fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                when (state) {
+                    is LoadingState -> {
+                        CircularProgressIndicator()
+                    }
 
-                    ) { index: Int ->
-                    AppNetworkImage(
-                        images!![index]!!, modifier = Modifier
-                            .fillMaxWidth()
-                            .clip(
-                                RoundedCornerShape(
-                                    15.dp
+                    is ErrorState -> {
+                        Text(state.toString())
+                    }
+
+                    is DataState -> {
+                        val productDetails = (state as DataState).data
+                        val images: List<String?>? = productDetails.images
+                        val pagerState = remember {
+                            PagerState(currentPage = 0, pageCount = { images?.size ?: 0 })
+                        }
+
+
+                        val orderCount = remember {
+                            mutableIntStateOf(1)
+                        }
+
+                        Column(
+                            Modifier
+                                .padding(16.dp)
+                                .fillMaxSize(),
+                            verticalArrangement = Arrangement.Top,
+                        ) {
+
+                            HorizontalPager(
+                                pagerState,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(200.dp)
+                                    .border(
+                                        1.dp, royal_blue_30, RoundedCornerShape(
+                                            15.dp
+                                        )
+                                    ),
+
+                                ) { index: Int ->
+                                AppNetworkImage(
+                                    images!![index]!!, modifier = Modifier
+                                        .fillMaxWidth()
+                                        .clip(
+                                            RoundedCornerShape(
+                                                15.dp
+                                            )
+                                        )
                                 )
-                            )
-                    )
-                }
+                            }
 
 
-                Row(modifier = Modifier.padding(vertical = 16.dp)) {
-                    if (productDetails.title != null)
-                        Text(
-                            productDetails.title!!,
+                            Row(modifier = Modifier.padding(vertical = 16.dp)) {
+                                if (productDetails.title != null)
+                                    Text(
+                                        productDetails.title!!,
+                                        modifier = Modifier.weight(1f),
+                                        style = MaterialTheme.typography.titleMedium.copy(
+                                            color = colorSchema.secondary
+                                        )
 
-                            style = MaterialTheme.typography.titleMedium.copy(
-                                color = colorSchema.secondary
-                            )
-
-                        )
-                    Spacer(modifier = Modifier.weight(1f))
-                    Text(
-                        productDetails.price.toString() + " EGP",
-                        style = MaterialTheme.typography.titleMedium.copy(
-                            color = colorSchema.secondary
-                        )
-                    )
-                }
-
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    if (productDetails.sold != null)
-                        Text(
-                            "${productDetails.sold!!}".take(4).plus(" Sold"),
-                            style = MaterialTheme.typography.bodyLarge.copy(
-                                color = colorSchema.secondary
-                            ),
-                            modifier = Modifier
-                                .border(
-                                    1.dp,
-                                    colorSchema.primary.copy(alpha = .3f),
-                                    shape = CircleShape
+                                    )
+                                Text(
+                                    productDetails.price.toString() + " EGP",
+                                    style = MaterialTheme.typography.titleMedium.copy(
+                                        color = colorSchema.secondary
+                                    )
                                 )
-                                .padding(horizontal = 8.dp, vertical = 6.dp),
-                        )
+                            }
 
-                    Icon(
-                        modifier = Modifier.padding(start = 16.dp),
-                        imageVector = Icons.Filled.StarRate,
-                        contentDescription = "Rate icon",
-                        tint = Color(0xFFFDD835)
-                    )
-                    Text("${productDetails.ratingsAverage ?: 0} (${productDetails.ratingsQuantity ?: 0})")
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                if (productDetails.sold != null)
+                                    Text(
+                                        "${productDetails.sold!!}".take(4).plus(" Sold"),
+                                        style = MaterialTheme.typography.bodyLarge.copy(
+                                            color = colorSchema.secondary
+                                        ),
+                                        modifier = Modifier
+                                            .border(
+                                                1.dp,
+                                                colorSchema.primary.copy(alpha = .3f),
+                                                shape = CircleShape
+                                            )
+                                            .padding(horizontal = 8.dp, vertical = 6.dp),
+                                    )
 
-                    Spacer(modifier = Modifier.weight(1f))
+                                Icon(
+                                    modifier = Modifier.padding(start = 16.dp),
+                                    imageVector = Icons.Filled.StarRate,
+                                    contentDescription = "Rate icon",
+                                    tint = Color(0xFFFDD835)
+                                )
+                                Text("${productDetails.ratingsAverage ?: 0} (${productDetails.ratingsQuantity ?: 0})")
 
-                    OrderCount(count = orderCount, quantity = productDetails.quantity ?: 0)
-                }
+                                Spacer(modifier = Modifier.weight(1f))
 
-                // add to cart
-                if (productDetails.description != null) {
+                                OrderCount(
+                                    count = orderCount,
+                                    quantity = productDetails.quantity ?: 0
+                                )
+                            }
 
-                    Text(
-                        "Description", modifier = Modifier.padding(
-                            top = 16.dp,
-                            bottom = 8.dp
-                        ),
-                        style = MaterialTheme.typography.titleMedium.copy(
-                            color = colorSchema.secondary
-                        )
-                    )
-                    Text(
-                        productDetails.description!!,
-                        style = MaterialTheme.typography.bodyLarge.copy(
-                            color = colorSchema.secondary.copy(alpha = .6f)
-                        )
-                    )// need to be read more
+                            // add to cart
+                            if (productDetails.description != null) {
+
+                                Text(
+                                    "Description", modifier = Modifier.padding(
+                                        top = 16.dp,
+                                        bottom = 8.dp
+                                    ),
+                                    style = MaterialTheme.typography.titleMedium.copy(
+                                        color = colorSchema.secondary
+                                    )
+                                )
+                                Text(
+                                    productDetails.description!!,
+                                    style = MaterialTheme.typography.bodyLarge.copy(
+                                        color = colorSchema.secondary.copy(alpha = .6f)
+                                    )
+                                )// need to be read more
+                            }
+                        }
+                    }
                 }
             }
         }
-    }
 
+    )
 
 }
 
