@@ -12,10 +12,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
@@ -36,6 +39,8 @@ import androidx.compose.runtime.MutableIntState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -50,19 +55,20 @@ import com.route.quickbuy.features.products.states.details.LoadingState
 import com.route.quickbuy.features.products.states.details.ProductDetailsViewModel
 import com.route.quickbuy.navController
 import com.route.quickbuy.ui.theme.royal_blue_30
+import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductDetailScreen(id: String) {
+    val scrollState = rememberScrollState()
 
-    val viewModel: ProductDetailsViewModel = viewModel()
-
+    val viewModel = viewModel<ProductDetailsViewModel>()
 
     val state by viewModel.state
 
-
     LaunchedEffect(id) {
+        if (state is DataState) return@LaunchedEffect
         viewModel.getProductDetails(id)
     }
     val colorSchema = MaterialTheme.colorScheme
@@ -107,16 +113,28 @@ fun ProductDetailScreen(id: String) {
             Box(
                 modifier = Modifier
                     .padding(paddingValues)
-                    .fillMaxSize(),
-                contentAlignment = Alignment.Center
+                    .fillMaxSize()
+                    .verticalScroll(scrollState),
             ) {
                 when (state) {
                     is LoadingState -> {
-                        CircularProgressIndicator()
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator()
+                        }
                     }
 
                     is ErrorState -> {
-                        Text(state.toString())
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(state.toString())
+                        }
                     }
 
                     is DataState -> {
@@ -138,29 +156,54 @@ fun ProductDetailScreen(id: String) {
                             verticalArrangement = Arrangement.Top,
                         ) {
 
-                            HorizontalPager(
-                                pagerState,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(200.dp)
-                                    .border(
-                                        1.dp, royal_blue_30, RoundedCornerShape(
-                                            15.dp
-                                        )
-                                    ),
-
-                                ) { index: Int ->
-                                AppNetworkImage(
-                                    images!![index]!!, modifier = Modifier
+                            Box(contentAlignment = Alignment.BottomCenter) {
+                                HorizontalPager(
+                                    pagerState,
+                                    modifier = Modifier
                                         .fillMaxWidth()
-                                        .clip(
-                                            RoundedCornerShape(
+                                        .height(200.dp)
+                                        .border(
+                                            1.dp, royal_blue_30, RoundedCornerShape(
                                                 15.dp
                                             )
-                                        )
-                                )
-                            }
+                                        ),
 
+                                    ) { index: Int ->
+                                    AppNetworkImage(
+                                        images!![index]!!, modifier = Modifier
+                                            .fillMaxWidth()
+                                            .clip(
+                                                RoundedCornerShape(
+                                                    15.dp
+                                                )
+                                            )
+                                    )
+                                }
+                                Row() {
+                                    for (i in 0 until (images?.size ?: 0)) {
+                                        val isSelected = i == pagerState.currentPage
+                                        val color =
+                                            if (isSelected) colorSchema.primary else colorSchema.secondary.copy(
+                                                alpha = .2f
+                                            )
+                                        val coroutineScope = rememberCoroutineScope()
+
+                                        Box(
+                                            modifier = Modifier
+                                                .padding(5.dp)
+                                                .size(15.dp)
+                                                .clip(CircleShape)
+                                                .background(color)
+                                                .clickable(onClick = {
+                                                    coroutineScope.launch {
+                                                        pagerState.animateScrollToPage(i)
+                                                    }
+                                                })
+                                        )
+                                    }
+
+                                }
+                            }
 
                             Row(modifier = Modifier.padding(vertical = 16.dp)) {
                                 if (productDetails.title != null)
@@ -212,7 +255,6 @@ fun ProductDetailScreen(id: String) {
                                 )
                             }
 
-                            // add to cart
                             if (productDetails.description != null) {
 
                                 Text(
@@ -224,12 +266,7 @@ fun ProductDetailScreen(id: String) {
                                         color = colorSchema.secondary
                                     )
                                 )
-                                Text(
-                                    productDetails.description!!,
-                                    style = MaterialTheme.typography.bodyLarge.copy(
-                                        color = colorSchema.secondary.copy(alpha = .6f)
-                                    )
-                                )// need to be read more
+                                ProductDescription(productDetails.description!!)
                             }
                         }
                     }
@@ -284,5 +321,40 @@ private fun OrderCount(count: MutableIntState, quantity: Int) {
             tint = colorSchema.onPrimary
         )
 
+    }
+}
+
+@Composable
+fun ProductDescription(description: String) {
+    var allowedMaxLines by remember {
+        mutableIntStateOf(2)
+    }
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(
+                onClick = {
+                    allowedMaxLines = if (allowedMaxLines == 2)
+                        Int.MAX_VALUE
+                    else
+                        2
+
+                }
+            )) {
+        Text(
+            description,
+            style = MaterialTheme.typography.bodyLarge.copy(
+                color = MaterialTheme.colorScheme.secondary.copy(alpha = .6f)
+            ),
+            maxLines = allowedMaxLines,
+            modifier = Modifier.weight(1f)
+        )
+        if (allowedMaxLines != Int.MAX_VALUE)
+            Text(
+                "Read More",
+                style = MaterialTheme.typography.bodyLarge.copy(
+                    color = MaterialTheme.colorScheme.secondary
+                ),
+            )
     }
 }
