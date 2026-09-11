@@ -1,6 +1,7 @@
 package com.route.data.di
 
 import com.route.data.services.AuthServices
+import com.route.data.services.ProductsServices
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -57,4 +58,15 @@ fun providesAuthServices(
     return retrofit.create(
         AuthServices::class.java
     )
-}}
+}
+
+@Provides
+@Singleton
+fun providesProductsServices(
+    retrofit: Retrofit
+): ProductsServices {
+    return retrofit.create(
+        ProductsServices::class.java
+    )
+}
+}
