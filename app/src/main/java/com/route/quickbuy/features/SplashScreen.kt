@@ -23,8 +23,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.route.quickbuy.BaseHomeDestination
 import com.route.quickbuy.R
+import com.route.quickbuy.SignUpDestination
 import com.route.quickbuy.SplashDestination
 import com.route.quickbuy.ui.theme.QuickBuyTheme
 import com.route.quickbuy.ui.theme.primary
@@ -37,7 +37,8 @@ fun SplashScreen(navController: NavHostController) {
     LaunchedEffect(Unit) {
         delay(2000)
         navController.popBackStack(SplashDestination, true)
-        navController.navigate(BaseHomeDestination)
+        //TODO: esraa check here user auth or not
+        navController.navigate(SignUpDestination)
     }
     QuickBuyTheme {
         Column(
@@ -47,8 +48,6 @@ fun SplashScreen(navController: NavHostController) {
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
-
             backgroundGradient(
                 colors = listOf(
                     white.copy(alpha = .4f),

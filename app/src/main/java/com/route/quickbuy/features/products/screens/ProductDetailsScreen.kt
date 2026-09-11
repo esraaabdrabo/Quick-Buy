@@ -47,7 +47,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.route.quickbuy.R
 import com.route.quickbuy.core.AppNetworkImage
 import com.route.quickbuy.core.ShoppingCartHeaderIcon
@@ -59,18 +59,15 @@ import com.route.quickbuy.navController
 import com.route.quickbuy.ui.theme.royal_blue_30
 import kotlinx.coroutines.launch
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProductDetailScreen(id: String) {
+fun ProductDetailScreen(id: String, viewModel: ProductDetailsViewModel = hiltViewModel()) {
     val scrollState = rememberScrollState()
 
-    val viewModel = viewModel<ProductDetailsViewModel>()
-
-    val state by viewModel.state
+    val state = viewModel.state
 
     LaunchedEffect(id) {
-        if (state is DataState) return@LaunchedEffect
+        if (state.value is DataState) return@LaunchedEffect
         viewModel.getProductDetails(id)
     }
     val colorSchema = MaterialTheme.colorScheme
@@ -118,7 +115,7 @@ fun ProductDetailScreen(id: String) {
                     .fillMaxSize()
                     .verticalScroll(scrollState),
             ) {
-                when (state) {
+                when (state.value) {
                     is LoadingState -> {
                         Box(
                             modifier = Modifier
@@ -140,7 +137,7 @@ fun ProductDetailScreen(id: String) {
                     }
 
                     is DataState -> {
-                        val productDetails = (state as DataState).data
+                        val productDetails = (state.value as DataState).data
                         val images: List<String?>? = productDetails.images
                         val pagerState = remember {
                             PagerState(currentPage = 0, pageCount = { images?.size ?: 0 })
@@ -218,7 +215,10 @@ fun ProductDetailScreen(id: String) {
 
                                     )
                                 Text(
-                                    stringResource(R.string.price_original, productDetails.price.toString()),
+                                    stringResource(
+                                        R.string.price_original,
+                                        productDetails.price.toString()
+                                    ),
                                     style = MaterialTheme.typography.titleMedium.copy(
                                         color = colorSchema.secondary
                                     )
@@ -228,7 +228,10 @@ fun ProductDetailScreen(id: String) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 if (productDetails.sold != null)
                                     Text(
-                                        stringResource(R.string.sold_count, "${productDetails.sold!!}".take(4)),
+                                        stringResource(
+                                            R.string.sold_count,
+                                            "${productDetails.sold!!}".take(4)
+                                        ),
                                         style = MaterialTheme.typography.bodyLarge.copy(
                                             color = colorSchema.secondary
                                         ),
@@ -266,7 +269,8 @@ fun ProductDetailScreen(id: String) {
                             if (productDetails.description != null) {
 
                                 Text(
-                                    stringResource(R.string.description_label), modifier = Modifier.padding(
+                                    stringResource(R.string.description_label),
+                                    modifier = Modifier.padding(
                                         top = 16.dp,
                                         bottom = 8.dp
                                     ),

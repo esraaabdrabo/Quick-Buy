@@ -6,7 +6,11 @@ import kotlinx.serialization.Serializable
 data object SplashDestination
 
 @Serializable
-data object LoginDestination
+data object SignInDestination
+
+
+@Serializable
+data object SignUpDestination
 
 @Serializable
 data object RegisterDestination

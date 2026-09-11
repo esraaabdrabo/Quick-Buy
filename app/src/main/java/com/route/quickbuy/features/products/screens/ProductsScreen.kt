@@ -11,6 +11,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -20,13 +21,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.route.domain.entities.ProductEntity
+import com.route.quickbuy.LocalConnectivityObserver
 import com.route.quickbuy.R
-import com.route.quickbuy.connectivityObserver
 import com.route.quickbuy.core.ShoppingCartHeaderIcon
 import com.route.quickbuy.core.fields.SearchField
 import com.route.quickbuy.features.products.composables.ProductCard
@@ -35,12 +36,9 @@ import com.route.quickbuy.features.products.states.details.DataState
 import com.route.quickbuy.features.products.states.details.ErrorState
 import com.route.quickbuy.features.products.states.details.LoadingState
 
-
 @Composable
-fun ProductsScreen(productsVM: ProductsViewModel = viewModel()) {
-
-
-    val hasConnection = connectivityObserver.current.isConnected.value
+fun ProductsScreen(productsVM: ProductsViewModel = hiltViewModel()) {
+    val hasConnection by LocalConnectivityObserver.current.isConnected.collectAsState()
 
 
     Column(
@@ -69,13 +67,14 @@ fun ProductsScreen(productsVM: ProductsViewModel = viewModel()) {
 
             is ErrorState -> {
                 Text(
-                    stringResource(R.string.something_went_wrong), modifier = Modifier.padding(16.dp),
+                    stringResource(R.string.something_went_wrong),
+                    modifier = Modifier.padding(16.dp),
                     style = MaterialTheme.typography.bodyLarge.copy(
                         color = MaterialTheme.colorScheme.primary
                     )
 
                 )
-                Text((state.value as ErrorState).error)
+                Text((state.value as ErrorState<List<ProductEntity>>).error)
             }
 
             is DataState -> {

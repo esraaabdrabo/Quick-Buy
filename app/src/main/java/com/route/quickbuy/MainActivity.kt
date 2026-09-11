@@ -4,9 +4,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.Modifier
@@ -47,29 +49,7 @@ class MainActivity : ComponentActivity() {
 
 
                         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                            NavHost(
-                                navController = navController.current,
-                                modifier = Modifier.padding(innerPadding),
-                                startDestination = SplashDestination
-                            ) {
-                                composable<SplashDestination>() {
-                                    SplashScreen(navController = navController.current)
-                                }
-                                composable<BaseHomeDestination>() {
-                                    HomeBaseScreen()
-                                }
-                                composable<LoginDestination>() {
-                                    SignInScreen(navController = navController.current)
-                                }
-                                composable<RegisterDestination>() {
-                                    SignUpScreen(navController = navController.current)
-                                }
-                                composable<ProductDetailDestination> { param ->
-                                    ProductDetailScreen(
-                                        id = param.arguments!!.getString("id") ?: ""
-                                    )
-                                }
-                            }
+                            AppNavHost(innerPadding = innerPadding);
                         }
                     }
                 }
@@ -78,3 +58,33 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@Composable
+fun AppNavHost(innerPadding: PaddingValues) {
+    return NavHost(
+        navController = navController.current,
+        modifier = Modifier.padding(innerPadding),
+        startDestination = SplashDestination
+    ) {
+        composable<SplashDestination>() {
+            SplashScreen(navController = navController.current)
+        }
+        composable<BaseHomeDestination>() {
+            HomeBaseScreen()
+        }
+        composable<SignInDestination>() {
+            SignInScreen(navController = navController.current)
+        }
+
+        composable<SignUpDestination>() {
+            SignUpScreen(navController = navController.current)
+        }
+        composable<RegisterDestination>() {
+            SignUpScreen(navController = navController.current)
+        }
+        composable<ProductDetailDestination> { param ->
+            ProductDetailScreen(
+                id = param.arguments!!.getString("id") ?: ""
+            )
+        }
+    }
+}
