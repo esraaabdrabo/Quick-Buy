@@ -17,6 +17,8 @@ import androidx.navigation.compose.rememberNavController
 import com.route.quickbuy.core.services.ConnectivityObserver
 import com.route.quickbuy.features.HomeBaseScreen
 import com.route.quickbuy.features.SplashScreen
+import com.route.quickbuy.features.auth.screens.SignInScreen
+import com.route.quickbuy.features.auth.screens.SignUpScreen
 import com.route.quickbuy.features.products.screens.ProductDetailScreen
 import com.route.quickbuy.ui.theme.QuickBuyTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -55,6 +57,12 @@ class MainActivity : ComponentActivity() {
                                 }
                                 composable<BaseHomeDestination>() {
                                     HomeBaseScreen()
+                                }
+                                composable<LoginDestination>() {
+                                    SignInScreen(navController = navController.current)
+                                }
+                                composable<RegisterDestination>() {
+                                    SignUpScreen(navController = navController.current)
                                 }
                                 composable<ProductDetailDestination> { param ->
                                     ProductDetailScreen(

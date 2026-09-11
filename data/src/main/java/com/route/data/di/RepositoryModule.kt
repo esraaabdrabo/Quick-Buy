@@ -1,6 +1,8 @@
 package com.route.data.di
 
+import com.route.data.repo.auth.AuthRepoImpl
 import com.route.data.repo.products.ProductsRepoImpl
+import com.route.domain.repos.auth.AuthRepo
 import com.route.domain.repos.products.ProductsRepo
 import dagger.Binds
 import dagger.Module
@@ -17,4 +19,10 @@ abstract class RepositoryModule {
     abstract fun bindsProductsRepo(
         impl: ProductsRepoImpl
     ): ProductsRepo
+
+    @Binds
+    @Singleton
+    abstract fun bindsAuthRepo(
+        impl: AuthRepoImpl
+    ): AuthRepo
 }
