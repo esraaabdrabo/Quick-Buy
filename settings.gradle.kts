@@ -21,5 +21,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "QuickBuy"
 include(":app")
-include(":domain")
 include(":data")
+include(":domain")

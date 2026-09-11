@@ -14,3 +14,10 @@ data object RegisterDestination
 @Serializable
 data object BaseHomeDestination
 
+@Serializable
+data object ProductsDestination
+
+@Serializable
+data class ProductDetailDestination(val id: String? = null)
+
+
