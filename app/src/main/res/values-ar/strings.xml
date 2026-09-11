@@ -1,0 +1,44 @@
+<resources>
+    <string name="title_activity_home">الشاشة الرئيسية</string>
+    <string name="title_activity_splash">شاشة البداية</string>
+
+    <!-- Bottom navigation -->
+    <string name="home">الرئيسية</string>
+    <string name="categories">الأقسام</string>
+    <string name="wishlist">المفضلة</string>
+    <string name="profile">الملف الشخصي</string>
+
+    <!-- Content descriptions -->
+    <string name="search_icon">أيقونة البحث</string>
+    <string name="shopping_cart_icon">أيقونة سلة التسوق</string>
+    <string name="icon_button">زر</string>
+    <string name="add_to_cart_icon">أيقونة الإضافة إلى السلة</string>
+    <string name="product_image">صورة المنتج</string>
+    <string name="rate_icon">أيقونة التقييم</string>
+    <string name="back">رجوع</string>
+    <string name="app_logo">الشعار</string>
+    <string name="route_logo">شعار </string>
+    <string name="remove">إنقاص</string>
+    <string name="add">زيادة</string>
+
+    <!-- Products list -->
+    <string name="no_internet_connection">لا يوجد اتصال بالإنترنت</string>
+    <string name="something_went_wrong">حدث خطأ ما</string>
+    <string name="no_data_found">لا توجد بيانات</string>
+    <string name="error">خطأ</string>
+    <string name="price_discounted">%1$s جنيه</string>
+    <string name="price_original">%1$s جنيه</string>
+    <string name="review_count">التقييمات (%1$s)</string>
+
+    <!-- Product details -->
+    <string name="product_details">تفاصيل المنتج</string>
+    <string name="sold_count">تم بيع %1$s</string>
+    <string name="rating_summary">%1$s (%2$s)</string>
+    <string name="description_label">الوصف</string>
+    <string name="read_more">قراءة المزيد</string>
+
+    <!-- Placeholder screens -->
+    <string name="categories_screen">شاشة الأقسام</string>
+    <string name="wishlist_screen">شاشة المفضلة</string>
+    <string name="profile_screen">شاشة الملف الشخصي</string>
+</resources>

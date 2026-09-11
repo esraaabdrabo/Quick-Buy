@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.route.quickbuy.ui.theme.onPrimary
 import com.route.quickbuy.ui.theme.primary
@@ -41,7 +42,7 @@ fun BottomBarItem(
             modifier = Modifier.Companion
                 .size(40.dp),
             painter = painterResource(item.iconID),
-            contentDescription = item.name,
+            contentDescription = stringResource(item.labelResId),
             tint =
                 if (isSelected) primary
                 else

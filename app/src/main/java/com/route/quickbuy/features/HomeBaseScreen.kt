@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.route.quickbuy.R
@@ -69,7 +70,7 @@ fun HomeBaseScreen() {
                                 painter = painterResource(
                                     R.drawable.ic_primary_logo
                                 ),
-                                contentDescription = "logo"
+                                contentDescription = stringResource(R.string.app_logo)
                             )
                         },
                     )
@@ -116,14 +117,14 @@ fun Body(
 
             BottomBarItems.Category -> {
                 Text(
-                    text = "Categories Screen",
+                    text = stringResource(R.string.categories_screen),
                     modifier = modifier
                 )
             }
 
             BottomBarItems.WishList -> {
                 Text(
-                    text = "WishList Screen",
+                    text = stringResource(R.string.wishlist_screen),
                     modifier = modifier
                 )
 
@@ -131,7 +132,7 @@ fun Body(
 
             BottomBarItems.Profile -> {
                 Text(
-                    text = "Profile Screen",
+                    text = stringResource(R.string.profile_screen),
                     modifier = modifier
                 )
 

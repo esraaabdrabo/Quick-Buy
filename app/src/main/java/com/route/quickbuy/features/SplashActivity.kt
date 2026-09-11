@@ -18,6 +18,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -64,7 +65,7 @@ fun SplashScreen(navController: NavHostController) {
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_white_logo),
-                    contentDescription = "Route Logo",
+                    contentDescription = stringResource(R.string.route_logo),
                     alignment = Alignment.Center,
                     modifier = Modifier.scale(3f)
                 )

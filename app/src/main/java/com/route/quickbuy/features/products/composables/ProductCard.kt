@@ -29,6 +29,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -66,7 +67,7 @@ fun ProductCard(product: ProductEntity, modifier: Modifier = Modifier) {
                     modifier = Modifier
                         .height(150.dp)
                         .fillMaxWidth(),
-                    contentDescription = "Product Image"
+                    contentDescription = stringResource(R.string.product_image)
                 )
             Box(
                 modifier = Modifier
@@ -109,7 +110,7 @@ fun ProductCard(product: ProductEntity, modifier: Modifier = Modifier) {
                     .fillMaxWidth()
             ) {
                 Text(
-                    text = "EGP ${product.discountedPrice}",
+                    text = stringResource(R.string.price_discounted, product.discountedPrice),
                     maxLines = 1,
                     overflow = TextOverflow.Companion.Ellipsis,
                     style = MaterialTheme.typography.bodyLarge.copy(
@@ -118,7 +119,7 @@ fun ProductCard(product: ProductEntity, modifier: Modifier = Modifier) {
                 )
                 Spacer(modifier = Modifier.Companion.width(16.dp))
                 Text(
-                    text = "${product.originalPrice} EGP",
+                    text = stringResource(R.string.price_original, product.originalPrice),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     style = MaterialTheme.typography.bodySmall.copy(
@@ -135,7 +136,7 @@ fun ProductCard(product: ProductEntity, modifier: Modifier = Modifier) {
                     .fillMaxWidth()
             ) {
                 Text(
-                    text = "Review (${product.rating ?: 0}) ",
+                    text = stringResource(R.string.review_count, product.rating ?: 0),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     style = MaterialTheme.typography.bodyLarge.copy(
@@ -144,7 +145,7 @@ fun ProductCard(product: ProductEntity, modifier: Modifier = Modifier) {
                 )
                 Icon(
                     imageVector = Icons.Filled.StarRate,
-                    contentDescription = "Rate icon",
+                    contentDescription = stringResource(R.string.rate_icon),
                     tint = Color(0xFFFDD835)
                 )
                 Spacer(modifier = Modifier.weight(1f))

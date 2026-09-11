@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import com.route.quickbuy.R
 
 @Composable
@@ -18,7 +19,7 @@ fun ShoppingCartHeaderIcon() {
             Image(
                 painterResource(R.drawable.ic_shopping_cart),
                 contentDescription =
-                    "Shopping card icon",
+                    stringResource(R.string.shopping_cart_icon),
                 Modifier.Companion.scale(2.5f)
             )
         }

@@ -17,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -24,6 +25,7 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.route.domain.entities.ProductEntity
+import com.route.quickbuy.R
 import com.route.quickbuy.connectivityObserver
 import com.route.quickbuy.core.ShoppingCartHeaderIcon
 import com.route.quickbuy.core.fields.SearchField
@@ -50,7 +52,7 @@ fun ProductsScreen(productsVM: ProductsViewModel = viewModel()) {
     )
     {
         if (!hasConnection) {
-            Text("No Internet Connection")
+            Text(stringResource(R.string.no_internet_connection))
             return@Column
         }
 
@@ -67,7 +69,7 @@ fun ProductsScreen(productsVM: ProductsViewModel = viewModel()) {
 
             is ErrorState -> {
                 Text(
-                    "Something went wrong", modifier = Modifier.padding(16.dp),
+                    stringResource(R.string.something_went_wrong), modifier = Modifier.padding(16.dp),
                     style = MaterialTheme.typography.bodyLarge.copy(
                         color = MaterialTheme.colorScheme.primary
                     )
@@ -79,7 +81,7 @@ fun ProductsScreen(productsVM: ProductsViewModel = viewModel()) {
             is DataState -> {
                 val noData: Boolean = (state.value as DataState<List<ProductEntity>>).data.isEmpty()
                 if (noData) {
-                    Text("No Data Found")
+                    Text(stringResource(R.string.no_data_found))
                     return@Column
                 }
                 Row {
@@ -104,7 +106,7 @@ fun ProductsScreen(productsVM: ProductsViewModel = viewModel()) {
                         is LoadState.Error -> {
                             item {
                                 Text(
-                                    "Error"
+                                    stringResource(R.string.error)
                                 )
                             }
                         }

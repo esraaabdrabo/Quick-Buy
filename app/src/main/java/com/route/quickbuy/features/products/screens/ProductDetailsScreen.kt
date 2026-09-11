@@ -45,8 +45,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.route.quickbuy.R
 import com.route.quickbuy.core.AppNetworkImage
 import com.route.quickbuy.core.ShoppingCartHeaderIcon
 import com.route.quickbuy.features.products.states.details.DataState
@@ -84,7 +86,7 @@ fun ProductDetailScreen(id: String) {
                     ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(R.string.back),
                             tint = colorSchema.primary
 
                         )
@@ -93,7 +95,7 @@ fun ProductDetailScreen(id: String) {
                 },
                 title = {
                     Text(
-                        "Product Details",
+                        stringResource(R.string.product_details),
 
                         style =
                             MaterialTheme.typography.titleMedium.copy(
@@ -216,7 +218,7 @@ fun ProductDetailScreen(id: String) {
 
                                     )
                                 Text(
-                                    productDetails.price.toString() + " EGP",
+                                    stringResource(R.string.price_original, productDetails.price.toString()),
                                     style = MaterialTheme.typography.titleMedium.copy(
                                         color = colorSchema.secondary
                                     )
@@ -226,7 +228,7 @@ fun ProductDetailScreen(id: String) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 if (productDetails.sold != null)
                                     Text(
-                                        "${productDetails.sold!!}".take(4).plus(" Sold"),
+                                        stringResource(R.string.sold_count, "${productDetails.sold!!}".take(4)),
                                         style = MaterialTheme.typography.bodyLarge.copy(
                                             color = colorSchema.secondary
                                         ),
@@ -242,10 +244,16 @@ fun ProductDetailScreen(id: String) {
                                 Icon(
                                     modifier = Modifier.padding(start = 16.dp),
                                     imageVector = Icons.Filled.StarRate,
-                                    contentDescription = "Rate icon",
+                                    contentDescription = stringResource(R.string.rate_icon),
                                     tint = Color(0xFFFDD835)
                                 )
-                                Text("${productDetails.ratingsAverage ?: 0} (${productDetails.ratingsQuantity ?: 0})")
+                                Text(
+                                    stringResource(
+                                        R.string.rating_summary,
+                                        productDetails.ratingsAverage ?: 0,
+                                        productDetails.ratingsQuantity ?: 0
+                                    )
+                                )
 
                                 Spacer(modifier = Modifier.weight(1f))
 
@@ -258,7 +266,7 @@ fun ProductDetailScreen(id: String) {
                             if (productDetails.description != null) {
 
                                 Text(
-                                    "Description", modifier = Modifier.padding(
+                                    stringResource(R.string.description_label), modifier = Modifier.padding(
                                         top = 16.dp,
                                         bottom = 8.dp
                                     ),
@@ -295,7 +303,7 @@ private fun OrderCount(count: MutableIntState, quantity: Int) {
     ) {
 
         Icon(
-            Icons.Filled.Remove, contentDescription = "Remove",
+            Icons.Filled.Remove, contentDescription = stringResource(R.string.remove),
             modifier = Modifier
                 .padding(end = 12.dp)
                 .border(
@@ -311,7 +319,7 @@ private fun OrderCount(count: MutableIntState, quantity: Int) {
             )
         )
         Icon(
-            Icons.Filled.Add, contentDescription = "Add",
+            Icons.Filled.Add, contentDescription = stringResource(R.string.add),
             modifier = Modifier
                 .padding(start = 12.dp)
                 .border(
@@ -351,7 +359,7 @@ fun ProductDescription(description: String) {
         )
         if (allowedMaxLines != Int.MAX_VALUE)
             Text(
-                "Read More",
+                stringResource(R.string.read_more),
                 style = MaterialTheme.typography.bodyLarge.copy(
                     color = MaterialTheme.colorScheme.secondary
                 ),
