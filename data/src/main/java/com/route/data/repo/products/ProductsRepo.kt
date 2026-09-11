@@ -1,17 +1,17 @@
+package com.route.data.repo.products
+
 import com.route.data.dataSources.products.ProductsRemoteDataSource
 import com.route.data.models.productDetails.ProductDetailsModel
 import com.route.data.models.products.ProductModel
-import com.route.data.repo.products.ProductDetailsParser
-import com.route.data.repo.products.ProductsParser
 import com.route.domain.entities.PaginationResponse
 import com.route.domain.entities.ProductDetailsEntity
 import com.route.domain.entities.ProductEntity
 import com.route.domain.repos.products.ProductsRepo
+import javax.inject.Inject
 
-class ProductsRepoImpl(
+class ProductsRepoImpl @Inject constructor(
     private val remoteDataSource: ProductsRemoteDataSource,
-) : ProductsRepo(
-) {
+) : ProductsRepo() {
     override suspend fun getProducts(page: Int): PaginationResponse<List<ProductEntity>> {
         //todo check status code -> handle response according to the status code
 

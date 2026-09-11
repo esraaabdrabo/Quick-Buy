@@ -20,23 +20,27 @@ import com.route.quickbuy.features.SplashScreen
 import com.route.quickbuy.features.products.screens.ProductDetailScreen
 import com.route.quickbuy.ui.theme.QuickBuyTheme
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
+
 
 val navController = compositionLocalOf<NavHostController> {
     error("No NavHostController")
 }
 
-val connectivityObserver = compositionLocalOf<ConnectivityObserver> {
+val LocalConnectivityObserver = compositionLocalOf<ConnectivityObserver> {
     error("No ConnectivityObserver")
 }
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @Inject
+    lateinit var connectivityObserver: ConnectivityObserver
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             QuickBuyTheme {
-                CompositionLocalProvider(connectivityObserver provides ConnectivityObserver(this)) {
+                CompositionLocalProvider(LocalConnectivityObserver provides connectivityObserver) {
                     CompositionLocalProvider(navController provides rememberNavController()) {
 
 

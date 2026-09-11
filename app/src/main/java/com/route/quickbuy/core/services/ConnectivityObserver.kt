@@ -6,9 +6,11 @@ import android.net.Network
 import android.net.NetworkRequest
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import javax.inject.Inject
+import javax.inject.Singleton
 
-
-class ConnectivityObserver(context: Context) {
+@Singleton
+class ConnectivityObserver @Inject constructor(context: Context) {
     private val _isConnected = MutableStateFlow(true)
     val isConnected: StateFlow<Boolean> = _isConnected
     private val cm =
