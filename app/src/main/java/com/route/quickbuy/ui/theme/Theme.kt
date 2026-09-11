@@ -16,9 +16,7 @@ private val LightColorScheme = lightColorScheme(
     onPrimary = onPrimary,
     onSecondary = onSecondary,
     surface = royal_blue_30,
-
-
-    )
+)
 
 @Composable
 fun QuickBuyTheme(
@@ -40,6 +38,7 @@ fun QuickBuyTheme(
     MaterialTheme(
         colorScheme = colorScheme,
         typography = Typography,
-        content = content
-    )
+        content = content,
+
+        )
 }

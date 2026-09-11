@@ -66,6 +66,8 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
 
     implementation(libs.androidx.navigation.compose)
+
+//hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
     implementation(libs.androidx.hilt.navigation.fragment)
@@ -73,5 +75,12 @@ dependencies {
     implementation(project(":data"))
     implementation(project(":domain"))
 
+    //Network image
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
+
+    // pagination
+    implementation(libs.androidx.paging.runtime)
+    implementation(libs.androidx.paging.compose)
 
 }

@@ -9,8 +9,11 @@ val secondary = Color(0xFF06004F)
 val onPrimary = Color(0xFFFFFFFF)
 val onSecondary = Color(0xFFFFFFFF)
 
-val deep_indigo = Color(0xFF06004f)
+val deepIndigo = Color(0xFF06004f)
 val white = Color(0xFFFFFFFF)
 val light_grey = Color(0xB3000000)
 
 
+val lightBlue = Color(0xff004182).copy(.3f)
+val gold = Color(0xffFDD835)
+val error = Color(0xffFF6B68)
