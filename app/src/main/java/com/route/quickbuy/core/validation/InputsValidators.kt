@@ -1,9 +1,14 @@
 package com.route.quickbuy.core.validation
 
+import javax.inject.Inject
+
 enum class FieldType {
+    FullName,
+    MobileNumber,
     Email,
     UserName,
-    Password
+    Password,
+    ConfirmPassword,
 }
 
 enum class InputValidationResult {
@@ -12,10 +17,11 @@ enum class InputValidationResult {
     InvalidFieldFormat,
     NumbersOnlyAllowed,
     PasswordTooShort,
-    PasswordMissingRequirements
+    PasswordMissingRequirements,
+    ConfirmPasswordDoesNotMatch,
 }
 
-class InputsValidators {
+class InputsValidators @Inject constructor() {
 
     private val emailRegex = Regex("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")
     private val userNameRegex = Regex("^[A-Za-z0-9_]{3,20}$")
@@ -26,6 +32,16 @@ class InputsValidators {
             return if (isRequired) InputValidationResult.FieldIsRequired else InputValidationResult.Valid
         }
         return null
+    }
+
+    /**
+     * Checks only presence, not format/strength — for contexts like login where
+     * the field was already validated against whatever rules applied at creation
+     * time, or fields like Full Name / Mobile Number that just need a value.
+     */
+    fun validateRequired(value: String?, isRequired: Boolean = true): InputValidationResult {
+        checkRequiredResult(value, isRequired)?.let { return it }
+        return InputValidationResult.Valid
     }
 
     fun validateEmail(email: String?, isRequired: Boolean = true): InputValidationResult {
@@ -71,5 +87,18 @@ class InputsValidators {
 
         return InputValidationResult.Valid
     }
-}
 
+    fun validateConfirmPassword(
+        password: String?,
+        confirmPassword: String?,
+        isRequired: Boolean = true
+    ): InputValidationResult {
+        checkRequiredResult(confirmPassword, isRequired)?.let { return it }
+
+        if (confirmPassword != password) {
+            return InputValidationResult.ConfirmPasswordDoesNotMatch
+        }
+
+        return InputValidationResult.Valid
+    }
+}

@@ -53,6 +53,9 @@
     <string name="password">كلمة المرور</string>
     <string name="enter_your_password">أدخل كلمة المرور</string>
 
+    <string name="confirm_password">تأكيد كلمة المرور</string>
+    <string name="enter_your_confirm_password">أعد إدخال كلمة المرور</string>
+
     <string name="forgot_password">هل نسيت كلمة المرور؟</string>
 
     <string name="login">تسجيل الدخول</string>
@@ -76,5 +79,6 @@
     <string name="numbers_only_allowed"> يُسمح بالأرقام فقط</string>
     <string name="password_too_short">يجب ألا تقل كلمة المرور عن 8 أحرف</string>
     <string name="password_missing_requirements">يجب أن تحتوي كلمة المرور على حرف ورقم واحد على الأقل</string>
+    <string name="confirm_password_does_not_match">كلمتا المرور غير متطابقتين</string>
 
 </resources>

@@ -12,5 +12,7 @@ fun InputValidationResult.getMessage(): String = when (this) {
     InputValidationResult.NumbersOnlyAllowed -> stringResource(R.string.numbers_only_allowed)
     InputValidationResult.PasswordTooShort -> stringResource(R.string.password_too_short)
     InputValidationResult.PasswordMissingRequirements -> stringResource(R.string.password_missing_requirements)
-    InputValidationResult.Valid -> ""
+    InputValidationResult.ConfirmPasswordDoesNotMatch -> stringResource(R.string.confirm_password_does_not_match)
+
+    else -> ""
 }
