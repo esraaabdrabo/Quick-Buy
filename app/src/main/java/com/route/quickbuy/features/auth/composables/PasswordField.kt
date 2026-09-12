@@ -14,31 +14,30 @@ import androidx.compose.material3.SecureTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.dp
 import com.route.quickbuy.R
 
 @Composable
 fun PasswordField(
     state: TextFieldState,
     visibilityState: MutableState<Boolean>,
-    label: String,
+    hint: String,
     supportingText: String?
 ) {
     SecureTextField(
         state = state,
-        label = {
-            Text(
-                label,
-                style = MaterialTheme.typography.bodySmall.copy(
-                    color = Color(0xFF000000).copy(alpha = .7f)
-                )
-            )
+        textStyle = MaterialTheme.typography.bodySmall.copy(color = colorResource(R.color.light_grey)),
+        shape = RoundedCornerShape(16.dp),
+        supportingText = {
+            supportingText?.let {
+                Text(it, color = MaterialTheme.colorScheme.error)
+            }
         },
-        shape = RoundedCornerShape(percent = 50),
-        supportingText = { if (supportingText == null) null else Text(supportingText) },
+
         textObfuscationMode = if (visibilityState.value) {
             TextObfuscationMode.Companion.Visible
         } else {
@@ -48,6 +47,15 @@ fun PasswordField(
             keyboardType = KeyboardType.Companion.Password,
             imeAction = ImeAction.Companion.Done
         ),
+        placeholder = {
+            Text(
+                hint,
+                style =
+                    MaterialTheme.typography.bodySmall.copy(
+                        color = colorResource(R.color.light_grey)
+                    ),
+            )
+        },
         trailingIcon = {
             IconButton(onClick = { visibilityState.value = !visibilityState.value }) {
                 Icon(

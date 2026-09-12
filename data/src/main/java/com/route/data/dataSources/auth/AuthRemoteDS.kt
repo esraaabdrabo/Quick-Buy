@@ -11,6 +11,7 @@ import javax.inject.Singleton
 abstract class AuthRemoteDataSource {
     abstract suspend fun signIn(request: SignInRequestModel): AuthResponseModel
     abstract suspend fun signUp(request: SignUpRequestModel): AuthResponseModel
+    abstract suspend fun refreshToken(token: String): String?
 }
 
 class AuthRemoteDataSourceImpl @Inject constructor(
@@ -23,5 +24,9 @@ class AuthRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun signUp(request: SignUpRequestModel): AuthResponseModel {
         return authServices.signUp(request)
+    }
+
+    override suspend fun refreshToken(token: String): String? {
+        return authServices.refreshToken(token)
     }
 }

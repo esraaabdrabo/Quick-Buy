@@ -12,4 +12,7 @@ interface AuthServices {
 
     @POST("/api/v1/auth/signup")
     suspend fun signUp(@Body body: SignUpRequestModel): AuthResponseModel
+
+    @POST("/api/v1/auth/refresh")
+    suspend fun refreshToken(@Body body: String): String?
 }

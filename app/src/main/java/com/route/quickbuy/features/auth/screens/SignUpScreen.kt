@@ -2,6 +2,7 @@ package com.route.quickbuy.features.auth.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -32,6 +33,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.route.quickbuy.R
+import com.route.quickbuy.SignInDestination
 import com.route.quickbuy.core.buttons.AppRoundedButton
 import com.route.quickbuy.core.validation.FieldType
 import com.route.quickbuy.core.validation.InputValidationResult
@@ -80,7 +82,7 @@ fun SignUpScreen(
         Spacer(modifier = Modifier.height(4.dp))
         AuthField(
             state = fullNameState,
-            label = stringResource(R.string.enter_your_full_name),
+            hint = stringResource(R.string.enter_your_full_name),
             supportingText = fieldsErrors[FieldType.FullName]?.takeIf { it != InputValidationResult.Valid }
                 ?.getMessage()
         )
@@ -96,7 +98,7 @@ fun SignUpScreen(
         Spacer(modifier = Modifier.height(4.dp))
         AuthField(
             state = mobileNumberState,
-            label = stringResource(R.string.enter_your_mobile_no),
+            hint = stringResource(R.string.enter_your_mobile_no),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Phone,
                 imeAction = ImeAction.Next
@@ -112,11 +114,13 @@ fun SignUpScreen(
             style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
             color = MaterialTheme.colorScheme.onPrimary,
             modifier = Modifier.fillMaxWidth(),
-        )
+
+            )
         Spacer(modifier = Modifier.height(4.dp))
         AuthField(
             state = emailState,
-            label = stringResource(R.string.email_address),
+            hint = stringResource(R.string.enter_your_mobile_no),
+
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Email,
                 imeAction = ImeAction.Next
@@ -137,7 +141,7 @@ fun SignUpScreen(
         PasswordField(
             state = passwordState,
             visibilityState = passwordVisibilityState,
-            label = stringResource(R.string.password),
+            hint = stringResource(R.string.enter_your_password),
             supportingText = fieldsErrors[FieldType.Password]?.takeIf { it != InputValidationResult.Valid }
                 ?.getMessage()
         )
@@ -154,7 +158,7 @@ fun SignUpScreen(
         PasswordField(
             state = confirmPasswordState,
             visibilityState = confirmPasswordVisibilityState,
-            label = stringResource(R.string.confirm_password),
+            hint = stringResource(R.string.enter_your_confirm_password),
             supportingText = fieldsErrors[FieldType.ConfirmPassword]?.takeIf { it != InputValidationResult.Valid }
                 ?.getMessage()
         )
@@ -171,6 +175,17 @@ fun SignUpScreen(
                     password = passwordState.text.toString(),
                     confirmPassword = confirmPasswordState.text.toString(),
                 )
+            },
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(
+            stringResource(R.string.already_have_an_account_sign_in),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onPrimary,
+            modifier = Modifier.clickable {
+                navController.navigate(SignInDestination)
             },
         )
     }

@@ -10,38 +10,50 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.unit.dp
+import com.route.quickbuy.R
 
 @Composable
 fun AuthField(
     state: TextFieldState,
-    label: String,
+    hint: String,
     supportingText: String?,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Companion.Default,
 ) {
     OutlinedTextField(
         state = state,
-        shape = RoundedCornerShape(percent = 50),
+        shape = RoundedCornerShape(16.dp),
         colors = TextFieldDefaults.colors(
             focusedContainerColor = MaterialTheme.colorScheme.onPrimary,
             unfocusedContainerColor = MaterialTheme.colorScheme.onPrimary,
             focusedIndicatorColor = MaterialTheme.colorScheme.onPrimary,
             unfocusedIndicatorColor = MaterialTheme.colorScheme.onPrimary,
-            cursorColor = MaterialTheme.colorScheme.onPrimary,
+            cursorColor = MaterialTheme.colorScheme.primary,
             focusedLabelColor = MaterialTheme.colorScheme.onPrimary,
             errorContainerColor = MaterialTheme.colorScheme.errorContainer,
             disabledIndicatorColor = Color.Companion.Transparent,
             errorIndicatorColor = Color.Companion.Transparent,
         ),
+        textStyle = MaterialTheme.typography.bodySmall.copy(
+            color = colorResource(R.color.light_grey)
+        ),
         lineLimits = TextFieldLineLimits.SingleLine,
         keyboardOptions = keyboardOptions,
-        label = {
+        placeholder = {
             Text(
-                label,
-                style = MaterialTheme.typography.bodySmall.copy(
-                    color = Color(0xFF000000).copy(alpha = .7f)
-                )
+                hint,
+                style =
+                    MaterialTheme.typography.bodySmall.copy(
+                        color = colorResource(R.color.light_grey)
+                    ),
             )
         },
-        supportingText = { if (supportingText == null) null else Text(supportingText) },
+        supportingText = {
+            if (supportingText == null) null else Text(
+                supportingText,
+                color = MaterialTheme.colorScheme.error,
+            )
+        },
     )
 }

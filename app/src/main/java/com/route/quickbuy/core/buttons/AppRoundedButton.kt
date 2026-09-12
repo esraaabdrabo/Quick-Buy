@@ -22,7 +22,7 @@ fun AppRoundedButton(
         modifier = Modifier
             .fillMaxWidth()
             .height(56.dp),
-        shape = RoundedCornerShape(percent = 50),
+        shape = RoundedCornerShape(16.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.onPrimary,
             contentColor = MaterialTheme.colorScheme.primary,
@@ -30,6 +30,7 @@ fun AppRoundedButton(
     ) {
         Text(
             text,
+            color = MaterialTheme.colorScheme.primary,
             style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
         )
     }

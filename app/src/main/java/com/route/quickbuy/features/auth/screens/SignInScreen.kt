@@ -89,7 +89,7 @@ fun SignInScreen(
         Spacer(modifier = Modifier.height(4.dp))
         AuthField(
             state = userNameState,
-            label = stringResource(R.string.enter_your_name),
+            hint = stringResource(R.string.enter_your_full_name),
             supportingText = fieldsErrors[FieldType.UserName]?.takeIf { it != InputValidationResult.Valid }
                 ?.getMessage()
         )
@@ -106,7 +106,7 @@ fun SignInScreen(
         PasswordField(
             state = passwordState,
             visibilityState = passwordVisibilityState,
-            label = stringResource(R.string.enter_your_password),
+            hint = stringResource(R.string.enter_your_password),
             supportingText = fieldsErrors[FieldType.Password]?.takeIf { it != InputValidationResult.Valid }
                 ?.getMessage()
         )
