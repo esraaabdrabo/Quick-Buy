@@ -13,10 +13,19 @@ class AuthRepoImpl @Inject constructor(
 ) : AuthRepo() {
 
     override suspend fun signIn(request: SignInRequestBodyEntity): UserEntity {
+
         //todo check status code -> handle response according to the status code
         val requestModel = AuthParser.toModel(request)
-        val response: AuthResponseModel = remoteDataSource.signIn(requestModel)
-        return AuthParser.toEntity(response)
+        val response: AuthResponseModel
+
+        try {
+            response = remoteDataSource.signIn(requestModel)
+            val entity = AuthParser.toEntity(response)
+            return entity
+        } catch (e: Exception) {
+            throw e
+        }
+
     }
 
     override suspend fun signUp(request: SignUpRequestBodyEntity): UserEntity {

@@ -114,13 +114,11 @@ fun SignUpScreen(
             style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
             color = MaterialTheme.colorScheme.onPrimary,
             modifier = Modifier.fillMaxWidth(),
-
-            )
+        )
         Spacer(modifier = Modifier.height(4.dp))
         AuthField(
             state = emailState,
-            hint = stringResource(R.string.enter_your_mobile_no),
-
+            hint = stringResource(R.string.enter_your_email_address),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Email,
                 imeAction = ImeAction.Next

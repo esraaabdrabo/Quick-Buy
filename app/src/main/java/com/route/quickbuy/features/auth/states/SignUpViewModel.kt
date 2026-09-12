@@ -1,6 +1,10 @@
 package com.route.quickbuy.features.auth.states
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.route.domain.entities.Auth.SignUpRequestBodyEntity
+import com.route.domain.usecases.auth.SignUpUseCase
 import com.route.quickbuy.core.validation.FieldType
 import com.route.quickbuy.core.validation.InputValidationResult
 import com.route.quickbuy.core.validation.InputsValidators
@@ -8,10 +12,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
+    private val signUp: SignUpUseCase,
     private val validators: InputsValidators
 ) : ViewModel() {
     private val _errorsState: MutableStateFlow<Map<FieldType, InputValidationResult>> =
@@ -39,7 +45,18 @@ class SignUpViewModel @Inject constructor(
             _errorsState.value = validationResult
             return
         }
-        //call use case
+        viewModelScope.launch {
+            val result = signUp.invoke(
+                SignUpRequestBodyEntity(
+                    email = email,
+                    name = fullName,
+                    password = password,
+                    confirmPassword = confirmPassword,
+                    phone = mobileNumber,
+                )
+            )
+            Log.d("", result.toString())
+        }
     }
 
     fun validateInputs(

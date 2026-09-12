@@ -129,7 +129,7 @@ fun SignInScreen(
             text = stringResource(R.string.login),
             onClick = {
                 viewModel.login(
-                    userName = userNameState.text.toString(),
+                    email = userNameState.text.toString(),
                     password = passwordState.text.toString(),
                 )
             },

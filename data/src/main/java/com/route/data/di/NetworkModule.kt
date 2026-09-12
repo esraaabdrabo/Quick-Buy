@@ -28,7 +28,7 @@ class NetworkModule {
 
     @Provides
     @Singleton
-
+    @AuthClient
     fun providesAuthRetrofit(
         @AuthClient okHttpClient: OkHttpClient,
         gsonConverterFactory: GsonConverterFactory
@@ -42,6 +42,7 @@ class NetworkModule {
 
     @Provides
     @Singleton
+    @AuthenticatedClient
     fun providesAuthenticatedRetrofit(
         @AuthenticatedClient okHttpClient: OkHttpClient,
         gsonConverterFactory: GsonConverterFactory
