@@ -52,6 +52,8 @@ dependencies {
 
     implementation(libs.kotlinx.serialization.json)
 
+    //secure storage
+    implementation(libs.androidx.security.crypto)
 
     implementation(project(":domain"))
     testImplementation(libs.junit)
