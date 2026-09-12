@@ -70,4 +70,11 @@
 
     <string name="sign_up">Sign up</string>
 
+    <!-- Input validation errors -->
+    <string name="field_is_required">This field is required</string>
+    <string name="invalid_field_format">Invalid format</string>
+    <string name="numbers_only_allowed">Numbers only are allowed</string>
+    <string name="password_too_short">Password must be at least 8 characters</string>
+    <string name="password_missing_requirements">Password must contain at least one letter and one number</string>
+
 </resources>

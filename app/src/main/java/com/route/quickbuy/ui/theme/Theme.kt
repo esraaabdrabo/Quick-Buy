@@ -1,6 +1,5 @@
 package com.route.quickbuy.ui.theme
 
-import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.dynamicDarkColorScheme
@@ -18,20 +17,27 @@ private val LightColorScheme = lightColorScheme(
     surface = royal_blue_30,
 )
 
+private val DarkColorScheme = lightColorScheme(
+    primary = primary,
+    secondary = secondary,
+    onPrimary = onPrimary,
+    onSecondary = onSecondary,
+    surface = royal_blue_30,
+)
+
 @Composable
 fun QuickBuyTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+        dynamicColor -> {
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
-        //        darkTheme -> DarkColorScheme
+        darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
 
@@ -39,6 +45,5 @@ fun QuickBuyTheme(
         colorScheme = colorScheme,
         typography = Typography,
         content = content,
-
-        )
+    )
 }

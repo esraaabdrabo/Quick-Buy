@@ -70,4 +70,11 @@
 
     <string name="sign_up">إنشاء حساب</string>
 
+    <!-- Input validation errors -->
+    <string name="field_is_required">هذا الحقل مطلوب</string>
+    <string name="invalid_field_format">صيغة غير صحيحة</string>
+    <string name="numbers_only_allowed"> يُسمح بالأرقام فقط</string>
+    <string name="password_too_short">يجب ألا تقل كلمة المرور عن 8 أحرف</string>
+    <string name="password_missing_requirements">يجب أن تحتوي كلمة المرور على حرف ورقم واحد على الأقل</string>
+
 </resources>
