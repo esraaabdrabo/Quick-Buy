@@ -43,7 +43,7 @@ class SignInViewModel @Inject constructor(
             _errorsState.value = validationResult
             return
         }
-
+        _errorsState.value = emptyMap()
         viewModelScope.launch {
             loadingState.value = true
 

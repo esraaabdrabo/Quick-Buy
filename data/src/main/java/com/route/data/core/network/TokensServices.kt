@@ -21,23 +21,33 @@ class TokensServices @Inject constructor(
 //  "iat": 1789231373,
 //  "exp": 1797007373
 //}
-    suspend fun getValidAccessToken(): String? {
-        val token = authLocalDataSource.getToken() ?: return null
-        val json = decodeJwtPayload(token) ?: return null
-        val expDate = dateServices.convertDateFromTimeStamp((json["exp"] as Number).toLong())
-
-        if (expDate.isBefore(dateServices.getCurrentDate())) {
-            return try {
-                // The backend has no refresh API, this will return same token (Esraa: review postman again)
-                val newToken = authRemoteDataSource.refreshToken(token)
-                if (newToken != null) authLocalDataSource.saveToken(newToken)
-                newToken
-            } catch (e: Exception) {
-                null // caller should treat null as "logout"
-            }
+    suspend fun getAccessToken(): String? {
+        if (isSessionExpired()) {
+            return refreshToken()
         }
+        return authLocalDataSource.getToken()
+    }
 
-        return token
+    suspend fun isSessionExpired(): Boolean {
+        val token = authLocalDataSource.getToken() ?: return true
+        val json = decodeJwtPayload(token) ?: return true
+        val expDate = dateServices.convertDateFromTimeStamp((json["exp"] as Number).toLong())
+        return expDate.isBefore(dateServices.getCurrentDate())
+    }
+
+    suspend fun refreshToken(): String? {
+        val refreshToken = authLocalDataSource.getToken() ?: return null
+        var newToken: String? = null
+        try {
+            // The backend has no refresh API, this will return same token (Esraa: review postman again)
+            newToken = authRemoteDataSource.refreshToken(refreshToken)
+            if (newToken != null) authLocalDataSource.saveToken(newToken)
+
+        } catch (e: Exception) {
+            null // caller should treat null as "logout"
+
+        }
+        return newToken
     }
 
 

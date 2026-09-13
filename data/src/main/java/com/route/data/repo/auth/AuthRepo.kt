@@ -37,7 +37,4 @@ class AuthRepoImpl @Inject constructor(
         return AuthParser.toEntity(response)
     }
 
-    override suspend fun logout() {
-        localDataSource.clearToken()
-    }
 }

@@ -1,4 +1,4 @@
-package com.route.quickbuy.features
+package com.route.quickbuy.features.splash.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -21,60 +21,62 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.route.quickbuy.R
-import com.route.quickbuy.SignUpDestination
 import com.route.quickbuy.SplashDestination
+import com.route.quickbuy.features.splash.states.InitializationViewModel
 import com.route.quickbuy.ui.theme.QuickBuyTheme
 import com.route.quickbuy.ui.theme.primary
 import com.route.quickbuy.ui.theme.white
 import kotlinx.coroutines.delay
 
-
 @Composable
-fun SplashScreen(navController: NavHostController) {
+fun SplashScreen(
+    navController: NavHostController,
+    viewModel: InitializationViewModel = hiltViewModel()
+) {
     LaunchedEffect(Unit) {
         delay(2000)
         navController.popBackStack(SplashDestination, true)
-        //TODO: esraa check here user auth or not
-        navController.navigate(SignUpDestination)
+        navController.navigate(viewModel.getInitialDestination())
     }
     QuickBuyTheme {
         Column(
-            modifier = Modifier
+            modifier = Modifier.Companion
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.primary),
             verticalArrangement = Arrangement.SpaceBetween,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.Companion.CenterHorizontally
         ) {
-            backgroundGradient(
+            BackgroundGradient(
                 colors = listOf(
                     white.copy(alpha = .4f),
                     primary.copy(alpha = .5f)
                 ),
-                Modifier
+                Modifier.Companion
                     .weight(1f),
             )
             Box(
-                modifier = Modifier
+                modifier = Modifier.Companion
                     .weight(1f)
                     .padding(horizontal = 32.dp),
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.Companion.Center
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_white_logo),
                     contentDescription = stringResource(R.string.route_logo),
-                    alignment = Alignment.Center,
-                    modifier = Modifier.scale(3f)
+                    alignment = Alignment.Companion.Center,
+                    modifier = Modifier.Companion.scale(3f)
                 )
             }
-            backgroundGradient(
+            BackgroundGradient(
                 colors = listOf(
                     primary.copy(alpha = .5f),
                     white.copy(alpha = .4f),
                 ),
-                Modifier
+                Modifier.Companion
                     .weight(1f),
             )
 
@@ -85,12 +87,12 @@ fun SplashScreen(navController: NavHostController) {
 
 
 @Composable
-fun backgroundGradient(colors: List<Color>, modifier: Modifier) {
+fun BackgroundGradient(colors: List<Color>, modifier: Modifier) {
     Box(
         modifier = modifier
             .fillMaxWidth()
             .background(
-                Brush.verticalGradient(
+                Brush.Companion.verticalGradient(
                     colors
 
                 )

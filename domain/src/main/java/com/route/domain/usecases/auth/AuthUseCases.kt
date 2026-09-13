@@ -21,6 +21,5 @@ class SignUpUseCase @Inject constructor(private val repo: AuthRepo) {
 
 class LogoutUseCase @Inject constructor(private val repo: AuthRepo) {
     suspend fun invoke() {
-        repo.logout()
     }
 }

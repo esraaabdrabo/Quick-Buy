@@ -2,26 +2,26 @@ package com.route.quickbuy
 
 import kotlinx.serialization.Serializable
 
-@Serializable
-data object SplashDestination
+abstract class Destination
 
 @Serializable
-data object SignInDestination
+data object SplashDestination : Destination()
+
+@Serializable
+data object SignInDestination : Destination()
 
 
 @Serializable
-data object SignUpDestination
+data object SignUpDestination : Destination()
+
 
 @Serializable
-data object RegisterDestination
+data object BaseHomeDestination : Destination()
 
 @Serializable
-data object BaseHomeDestination
+data object ProductsDestination : Destination()
 
 @Serializable
-data object ProductsDestination
-
-@Serializable
-data class ProductDetailDestination(val id: String? = null)
+data class ProductDetailDestination(val id: String? = null) : Destination()
 
 

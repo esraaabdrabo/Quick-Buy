@@ -10,7 +10,7 @@ import javax.inject.Singleton
 
 @Singleton
 abstract class AuthLocalDataSource {
-    abstract suspend fun saveToken(token: String)
+    abstract suspend fun saveToken(token: String)// we should save another token (refresh but backend is only sending access token)
     abstract suspend fun getToken(): String?
     abstract suspend fun clearToken()
 

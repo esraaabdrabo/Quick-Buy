@@ -8,5 +8,4 @@ import com.route.domain.entities.Auth.UserEntity
 abstract class AuthRepo {
     abstract suspend fun signIn(request: SignInRequestBodyEntity): AppResult<UserEntity>
     abstract suspend fun signUp(request: SignUpRequestBodyEntity): UserEntity
-    abstract suspend fun logout()
 }
