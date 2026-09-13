@@ -82,5 +82,6 @@
     <string name="password_too_short">يجب ألا تقل كلمة المرور عن 8 أحرف</string>
     <string name="password_missing_requirements">يجب أن تحتوي كلمة المرور على حرف ورقم واحد على الأقل</string>
     <string name="confirm_password_does_not_match">كلمتا المرور غير متطابقتين</string>
+    <string name="ok">ok\n</string>
 
 </resources>
