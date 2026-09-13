@@ -14,12 +14,13 @@ class SignInUseCase @Inject constructor(private val repo: AuthRepo) {
 }
 
 class SignUpUseCase @Inject constructor(private val repo: AuthRepo) {
-    suspend fun invoke(request: SignUpRequestBodyEntity): UserEntity {
+    suspend fun invoke(request: SignUpRequestBodyEntity): AppResult<UserEntity> {
         return repo.signUp(request)
     }
 }
 
 class LogoutUseCase @Inject constructor(private val repo: AuthRepo) {
     suspend fun invoke() {
+        return repo.logout()
     }
 }

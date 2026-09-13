@@ -4,6 +4,7 @@ import com.route.data.core.network.NetworkErrorMapper
 import com.route.data.dataSources.auth.AuthLocalDataSource
 import com.route.data.dataSources.auth.AuthRemoteDataSource
 import com.route.data.models.auth.AuthResponseModel
+import com.route.data.parsers.AuthParser
 import com.route.domain.core.AppResult
 import com.route.domain.entities.Auth.SignInRequestBodyEntity
 import com.route.domain.entities.Auth.SignUpRequestBodyEntity
@@ -31,10 +32,22 @@ class AuthRepoImpl @Inject constructor(
         }
     }
 
-    override suspend fun signUp(request: SignUpRequestBodyEntity): UserEntity {
+    override suspend fun signUp(request: SignUpRequestBodyEntity): AppResult<UserEntity> {
         val requestModel = AuthParser.toModel(request)
-        val response: AuthResponseModel = remoteDataSource.signUp(requestModel)
-        return AuthParser.toEntity(response)
+
+        return try {
+            val response: AuthResponseModel = remoteDataSource.signUp(requestModel)
+            localDataSource.saveToken(response.token)
+            AppResult.Success(AuthParser.toEntity(response))
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            AppResult.Failure(NetworkErrorMapper.map(e))
+        }
+    }
+
+    override suspend fun logout() {
+        localDataSource.clearToken()
     }
 
 }

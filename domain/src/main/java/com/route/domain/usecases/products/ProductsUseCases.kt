@@ -1,5 +1,6 @@
 package com.route.domain.usecases.products
 
+import com.route.domain.core.AppResult
 import com.route.domain.entities.PaginationResponse
 import com.route.domain.entities.ProductDetailsEntity
 import com.route.domain.entities.ProductEntity
@@ -7,13 +8,13 @@ import com.route.domain.repos.products.ProductsRepo
 import javax.inject.Inject
 
 class GetProductsUseCase @Inject constructor(private val repo: ProductsRepo) {
-    suspend fun invoke(page: Int = 1): PaginationResponse<List<ProductEntity>> {
+    suspend fun invoke(page: Int = 1): AppResult<PaginationResponse<List<ProductEntity>>> {
         return repo.getProducts(page)
     }
 }
 
 class GetProductDetailsUseCase @Inject constructor(private val repo: ProductsRepo) {
-    suspend fun invoke(id: String): ProductDetailsEntity {
+    suspend fun invoke(id: String): AppResult<ProductDetailsEntity> {
         return repo.getProduct(id)
     }
 }

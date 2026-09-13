@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
+import com.route.domain.core.AppResult
 import com.route.domain.entities.PaginationResponse
 import com.route.domain.entities.ProductEntity
 import com.route.domain.usecases.products.GetProductsUseCase
@@ -25,16 +26,17 @@ class ProductsViewModel @Inject constructor(
     val state = mutableStateOf<ViewModelState<List<ProductEntity>>>(LoadingState())
 
     suspend fun getProducts(offset: Int): PaginationResponse<List<ProductEntity>>? {
-        try {
-            val response: PaginationResponse<List<ProductEntity>> =
-                getProducts.invoke(page = offset)
-            state.value = DataState(response.data)
-            return response
-        } catch (e: Exception) {
-            state.value = ErrorState(e.message ?: "Unknown Error")
-            return null
-        }
+        return when (val result = getProducts.invoke(page = offset)) {
+            is AppResult.Success -> {
+                state.value = DataState(result.data.data)
+                result.data
+            }
 
+            is AppResult.Failure -> {
+                state.value = ErrorState(result.error.message)
+                null
+            }
+        }
     }
 
     private val pagingSource = ProductsPagingSource { offset ->

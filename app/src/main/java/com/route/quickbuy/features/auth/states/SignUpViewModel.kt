@@ -1,17 +1,19 @@
 package com.route.quickbuy.features.auth.states
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.route.domain.core.AppResult
 import com.route.domain.entities.Auth.SignUpRequestBodyEntity
 import com.route.domain.usecases.auth.SignUpUseCase
 import com.route.quickbuy.core.validation.FieldType
 import com.route.quickbuy.core.validation.InputValidationResult
 import com.route.quickbuy.core.validation.InputsValidators
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,6 +26,12 @@ class SignUpViewModel @Inject constructor(
         MutableStateFlow(emptyMap())
 
     val errorsState: StateFlow<Map<FieldType, InputValidationResult>> = _errorsState.asStateFlow()
+
+    private val loadingState = MutableStateFlow(false)
+    val isLoading = loadingState.asStateFlow()
+
+    private val _events: Channel<SignUpEvents> = Channel(Channel.BUFFERED)
+    val events = _events.receiveAsFlow()
 
     fun signUp(
         fullName: String,
@@ -45,8 +53,11 @@ class SignUpViewModel @Inject constructor(
             _errorsState.value = validationResult
             return
         }
+        _errorsState.value = emptyMap()
         viewModelScope.launch {
-            val result = signUp.invoke(
+            loadingState.value = true
+
+            when (val result = signUp.invoke(
                 SignUpRequestBodyEntity(
                     email = email,
                     name = fullName,
@@ -54,8 +65,14 @@ class SignUpViewModel @Inject constructor(
                     confirmPassword = confirmPassword,
                     phone = mobileNumber,
                 )
-            )
-            Log.d("", result.toString())
+            )) {
+                is AppResult.Success -> _events.send(SignUpEvents.NavigateToHome)
+                is AppResult.Failure -> _events.send(
+                    SignUpEvents.SignUpFailed(message = result.error.message)
+                )
+            }
+
+            loadingState.value = false
         }
     }
 

@@ -1,4 +1,4 @@
-package com.route.data.repo.auth
+package com.route.data.parsers
 
 import com.route.data.models.auth.AuthResponseModel
 import com.route.data.models.auth.SignInRequestModel

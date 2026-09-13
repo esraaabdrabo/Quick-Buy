@@ -2,6 +2,7 @@ package com.route.quickbuy.features.products.states.details
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import com.route.domain.core.AppResult
 import com.route.domain.entities.ProductDetailsEntity
 import com.route.domain.usecases.products.GetProductDetailsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,11 +16,9 @@ class ProductDetailsViewModel @Inject constructor(
 
     suspend fun getProductDetails(id: String) {
         state.value = LoadingState()
-        try {
-            val details = getProductDetails.invoke(id)
-            state.value = DataState(details)
-        } catch (e: Exception) {
-            state.value = ErrorState(e.message ?: "Unknown Error")
+        when (val result = getProductDetails.invoke(id)) {
+            is AppResult.Success -> state.value = DataState(result.data)
+            is AppResult.Failure -> state.value = ErrorState(result.error.message)
         }
     }
 }
