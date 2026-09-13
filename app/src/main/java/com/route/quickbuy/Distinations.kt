@@ -24,4 +24,7 @@ data object ProductsDestination : Destination()
 @Serializable
 data class ProductDetailDestination(val id: String? = null) : Destination()
 
+@Serializable
+data object ProfileDestination : Destination()
+
 

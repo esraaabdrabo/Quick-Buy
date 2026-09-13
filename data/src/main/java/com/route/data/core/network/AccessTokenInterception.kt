@@ -13,9 +13,6 @@ class AccessTokenInterception @Inject constructor(
 ) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val token = runBlocking { tokensServices.getAccessToken() }
-        if (token == null) {
-            // no Logout method in backend
-        }
         val request: Request = chain.request().newBuilder()
             .apply { token?.let { addHeader("Authorization", it) } }
             .build()

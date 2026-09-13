@@ -35,7 +35,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavHostController
 import com.route.quickbuy.BaseHomeDestination
 import com.route.quickbuy.R
 import com.route.quickbuy.SignUpDestination
@@ -47,10 +46,10 @@ import com.route.quickbuy.features.auth.composables.AuthField
 import com.route.quickbuy.features.auth.composables.PasswordField
 import com.route.quickbuy.features.auth.states.SignInEvents
 import com.route.quickbuy.features.auth.states.SignInViewModel
+import com.route.quickbuy.navController
 
 @Composable
 fun SignInScreen(
-    navController: NavHostController,
     viewModel: SignInViewModel = hiltViewModel()
 ) {
     val userNameState = rememberTextFieldState()
@@ -59,7 +58,7 @@ fun SignInScreen(
     val fieldsErrors by viewModel.errorsState.collectAsStateWithLifecycle()
     var errorDialogMessage by rememberSaveable { mutableStateOf<String?>(null) }
     val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
-
+    val navController = navController.current
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
             when (event) {

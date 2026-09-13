@@ -22,11 +22,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.route.quickbuy.R
 import com.route.quickbuy.SplashDestination
 import com.route.quickbuy.features.splash.states.InitializationViewModel
+import com.route.quickbuy.navController
 import com.route.quickbuy.ui.theme.QuickBuyTheme
 import com.route.quickbuy.ui.theme.primary
 import com.route.quickbuy.ui.theme.white
@@ -34,9 +33,10 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen(
-    navController: NavHostController,
     viewModel: InitializationViewModel = hiltViewModel()
 ) {
+    val navController = navController.current
+
     LaunchedEffect(Unit) {
         delay(2000)
         navController.popBackStack(SplashDestination, true)
@@ -105,6 +105,6 @@ fun BackgroundGradient(colors: List<Color>, modifier: Modifier) {
 @Composable
 fun SplashBodyPreview() {
     QuickBuyTheme {
-        SplashScreen(rememberNavController())
+        SplashScreen()
     }
 }

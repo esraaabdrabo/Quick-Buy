@@ -29,6 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.route.quickbuy.R
 import com.route.quickbuy.features.products.screens.ProductsScreen
+import com.route.quickbuy.features.profile.screens.ProfileScreen
 import com.route.quickbuy.ui.components.AppBottomBar
 import com.route.quickbuy.ui.components.BottomBarItems
 
@@ -131,11 +132,7 @@ fun Body(
             }
 
             BottomBarItems.Profile -> {
-                Text(
-                    text = stringResource(R.string.profile_screen),
-                    modifier = modifier
-                )
-
+                ProfileScreen()
             }
         }
         //TODO: -why this is not lifting the body up? it's behind the body

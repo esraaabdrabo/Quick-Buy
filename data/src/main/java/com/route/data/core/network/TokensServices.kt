@@ -2,6 +2,7 @@ package com.route.data.core.network
 
 import android.util.Base64
 import com.route.data.core.network.Services.DateServices
+import com.route.data.core.session.SessionManager
 import com.route.data.dataSources.auth.AuthLocalDataSource
 import com.route.data.dataSources.auth.AuthRemoteDataSource
 import org.json.JSONObject
@@ -11,7 +12,8 @@ import javax.inject.Inject
 class TokensServices @Inject constructor(
     private val dateServices: DateServices,
     private val authRemoteDataSource: AuthRemoteDataSource,
-    private val authLocalDataSource: AuthLocalDataSource
+    private val authLocalDataSource: AuthLocalDataSource,
+    private val sessionManager: SessionManager
 ) {
 
     //{
@@ -36,18 +38,24 @@ class TokensServices @Inject constructor(
     }
 
     suspend fun refreshToken(): String? {
-        val refreshToken = authLocalDataSource.getToken() ?: return null
+        val refreshToken = authLocalDataSource.getToken() ?: run {
+            sessionManager.notifySessionExpired()
+            return null
+        }
         var newToken: String? = null
         try {
             // The backend has no refresh API, this will return same token (Esraa: review postman again)
             newToken = authRemoteDataSource.refreshToken(refreshToken)
-            if (newToken != null) authLocalDataSource.saveToken(newToken)
-
+            if (newToken != null) {
+                authLocalDataSource.saveToken(newToken)
+                return newToken
+            }
+            sessionManager.notifySessionExpired()
+            return null
         } catch (e: Exception) {
-            null // caller should treat null as "logout"
-
+            sessionManager.notifySessionExpired()
         }
-        return newToken
+        return null
     }
 
 

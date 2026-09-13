@@ -10,17 +10,22 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.route.data.core.session.SessionEvent
+import com.route.data.core.session.SessionManager
+import com.route.domain.usecases.auth.LogoutUseCase
 import com.route.quickbuy.core.services.ConnectivityObserver
 import com.route.quickbuy.features.HomeBaseScreen
 import com.route.quickbuy.features.auth.screens.SignInScreen
 import com.route.quickbuy.features.auth.screens.SignUpScreen
 import com.route.quickbuy.features.products.screens.ProductDetailScreen
+import com.route.quickbuy.features.products.screens.ProductsScreen
 import com.route.quickbuy.features.splash.screens.SplashScreen
 import com.route.quickbuy.ui.theme.QuickBuyTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,14 +44,35 @@ val LocalConnectivityObserver = compositionLocalOf<ConnectivityObserver> {
 class MainActivity : ComponentActivity() {
     @Inject
     lateinit var connectivityObserver: ConnectivityObserver
+
+    @Inject
+    lateinit var sessionManager: SessionManager
+
+    @Inject
+    lateinit var logoutUseCase: LogoutUseCase
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             QuickBuyTheme {
                 CompositionLocalProvider(LocalConnectivityObserver provides connectivityObserver) {
                     CompositionLocalProvider(navController provides rememberNavController()) {
-
+                        val navController = navController.current
+                        LaunchedEffect(Unit) {
+                            sessionManager.sessionEvents.collect { event ->
+                                when (event) {
+                                    SessionEvent.Expired, SessionEvent.LoggedOut -> {
+                                        logoutUseCase.invoke()
+                                        navController.navigate(SignInDestination) {
+                                            popUpTo(0) { inclusive = true }
+                                        }
+                                    }
+                                }
+                            }
+                        }
 
                         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                             AppNavHost(innerPadding = innerPadding);
@@ -66,22 +92,26 @@ fun AppNavHost(innerPadding: PaddingValues) {
         startDestination = SplashDestination
     ) {
         composable<SplashDestination>() {
-            SplashScreen(navController = navController.current)
+            SplashScreen()
         }
         composable<BaseHomeDestination>() {
             HomeBaseScreen()
         }
         composable<SignInDestination>() {
-            SignInScreen(navController = navController.current)
+            SignInScreen()
         }
 
         composable<SignUpDestination>() {
-            SignUpScreen(navController = navController.current)
+            SignUpScreen()
         }
         composable<ProductDetailDestination> { param ->
             ProductDetailScreen(
                 id = param.arguments!!.getString("id") ?: ""
             )
+
+        }
+        composable<ProfileDestination>() {
+            ProductsScreen()
         }
     }
 }
