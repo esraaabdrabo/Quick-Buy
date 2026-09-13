@@ -1,5 +1,6 @@
 package com.route.quickbuy.features.auth.composables
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldState
@@ -14,6 +15,7 @@ import androidx.compose.material3.SecureTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -30,6 +32,7 @@ fun PasswordField(
 ) {
     SecureTextField(
         state = state,
+        modifier = Modifier.fillMaxWidth(),
         textStyle = MaterialTheme.typography.bodySmall.copy(color = colorResource(R.color.light_grey)),
         shape = RoundedCornerShape(16.dp),
         supportingText = {

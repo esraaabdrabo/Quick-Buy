@@ -4,10 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -25,7 +22,7 @@ import com.route.quickbuy.features.HomeBaseScreen
 import com.route.quickbuy.features.auth.screens.SignInScreen
 import com.route.quickbuy.features.auth.screens.SignUpScreen
 import com.route.quickbuy.features.products.screens.ProductDetailScreen
-import com.route.quickbuy.features.products.screens.ProductsScreen
+import com.route.quickbuy.features.profile.screens.ProfileScreen
 import com.route.quickbuy.features.splash.screens.SplashScreen
 import com.route.quickbuy.ui.theme.QuickBuyTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -74,9 +71,7 @@ class MainActivity : ComponentActivity() {
                             }
                         }
 
-                        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                            AppNavHost(innerPadding = innerPadding);
-                        }
+                        AppNavHost()
                     }
                 }
             }
@@ -85,10 +80,10 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun AppNavHost(innerPadding: PaddingValues) {
+fun AppNavHost() {
     return NavHost(
         navController = navController.current,
-        modifier = Modifier.padding(innerPadding),
+        modifier = Modifier.fillMaxSize(),
         startDestination = SplashDestination
     ) {
         composable<SplashDestination>() {
@@ -111,7 +106,7 @@ fun AppNavHost(innerPadding: PaddingValues) {
 
         }
         composable<ProfileDestination>() {
-            ProductsScreen()
+            ProfileScreen()
         }
     }
 }

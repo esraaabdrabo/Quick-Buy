@@ -51,9 +51,13 @@ class SignInViewModel @Inject constructor(
                 signIn.invoke(SignInRequestBodyEntity(email = email, password = password))) {
                 is AppResult.Success -> _events.send(SignInEvents.NavigateToHome)
                 is AppResult.Failure -> _events.send(
-                    SignInEvents.SignInFailed(
-                        message = result.error.message
-                    )
+                    SignInEvents.SignInFailed
+                    // here i was using  message = result.error.message
+                    // but backend sends diff error shape
+                    //1- {"statusMsg":"fail","message":"Incorrect email or password"} => sign in
+                    //2- => sign up
+
+
                 )
             }
             loadingState.value = false

@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.verticalScroll
@@ -48,28 +49,32 @@ import com.route.quickbuy.features.auth.states.SignInEvents
 import com.route.quickbuy.features.auth.states.SignInViewModel
 import com.route.quickbuy.navController
 
+
 @Composable
 fun SignInScreen(
     viewModel: SignInViewModel = hiltViewModel()
 ) {
-    val userNameState = rememberTextFieldState()
+    val emailState = rememberTextFieldState()
     val passwordState = rememberTextFieldState()
     val passwordVisibilityState = remember { mutableStateOf(false) }
     val fieldsErrors by viewModel.errorsState.collectAsStateWithLifecycle()
     var errorDialogMessage by rememberSaveable { mutableStateOf<String?>(null) }
     val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
     val navController = navController.current
+    val someThingWentWrong = stringResource(R.string.something_went_wrong)
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
             when (event) {
                 SignInEvents.NavigateToHome -> navController.navigate(BaseHomeDestination)
-                is SignInEvents.SignInFailed -> errorDialogMessage = event.message
+                is SignInEvents.SignInFailed -> errorDialogMessage = someThingWentWrong
+
             }
         }
     }
     if (isLoading) {
         Dialog(onDismissRequest = {}) { CircularProgressIndicator() }
     }
+
 
     errorDialogMessage?.let { message ->
         AppConfirmationDialog(
@@ -88,6 +93,7 @@ fun SignInScreen(
             .verticalScroll(rememberScrollState())
             .imePadding()
             .background(color = MaterialTheme.colorScheme.primary)
+            .systemBarsPadding()
             .padding(horizontal = 24.dp, vertical = 16.dp),
     ) {
         Image(
@@ -111,16 +117,16 @@ fun SignInScreen(
         Spacer(modifier = Modifier.height(24.dp))
 
         Text(
-            stringResource(R.string.user_name),
+            stringResource(R.string.email_address),
             style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
             color = MaterialTheme.colorScheme.onPrimary,
             modifier = Modifier.fillMaxWidth(),
         )
         Spacer(modifier = Modifier.height(4.dp))
         AuthField(
-            state = userNameState,
-            hint = stringResource(R.string.enter_your_full_name),
-            supportingText = fieldsErrors[FieldType.UserName]?.takeIf { it != InputValidationResult.Valid }
+            state = emailState,
+            hint = stringResource(R.string.enter_your_email_address),
+            supportingText = fieldsErrors[FieldType.Email]?.takeIf { it != InputValidationResult.Valid }
                 ?.getMessage()
         )
 
@@ -159,7 +165,7 @@ fun SignInScreen(
             text = stringResource(R.string.login),
             onClick = {
                 viewModel.login(
-                    email = userNameState.text.toString(),
+                    email = emailState.text.toString(),
                     password = passwordState.text.toString(),
                 )
             },

@@ -42,7 +42,7 @@ fun SearchField(onSearchChange: (String) -> Unit, value: String) {
             unfocusedIndicatorColor = Color.Companion.Transparent,
 
             ),
-        modifier = Modifier.Companion
+        modifier = Modifier
             .border(
                 1.dp, MaterialTheme.colorScheme.primary,
                 shape = RoundedCornerShape(

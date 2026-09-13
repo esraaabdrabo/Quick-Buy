@@ -16,7 +16,6 @@ import com.route.quickbuy.core.buttons.AppRoundedButton
 import com.route.quickbuy.features.profile.states.ProfileViewModel
 
 @Preview
-
 @Composable
 fun ProfileScreenPreview(
 ) {

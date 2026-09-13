@@ -1,4 +1,4 @@
-package com.route.data.repo.products
+package com.route.data.parsers
 
 import com.route.data.models.productDetails.ProductDetailsModel
 import com.route.domain.entities.ProductDetailsEntity
