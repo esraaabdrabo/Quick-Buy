@@ -47,6 +47,7 @@ import com.route.quickbuy.ui.theme.lightBlue
 fun ProductCard(product: ProductEntity, modifier: Modifier = Modifier) {
     val navController = navController.current
     Card(
+        shape = RoundedCornerShape(15.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.onPrimary
         ),
@@ -113,6 +114,7 @@ fun ProductCard(product: ProductEntity, modifier: Modifier = Modifier) {
                     text = stringResource(R.string.price_discounted, product.discountedPrice),
                     maxLines = 1,
                     overflow = TextOverflow.Companion.Ellipsis,
+                    modifier = Modifier.weight(1f, fill = false),
                     style = MaterialTheme.typography.bodyLarge.copy(
                         color = deepIndigo
                     )
@@ -139,6 +141,7 @@ fun ProductCard(product: ProductEntity, modifier: Modifier = Modifier) {
                     text = stringResource(R.string.review_count, product.rating ?: 0),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f, fill = false),
                     style = MaterialTheme.typography.bodyLarge.copy(
                         color = MaterialTheme.colorScheme.secondary
                     )

@@ -27,10 +27,9 @@ fun ProfileScreen(
     viewModel: ProfileViewModel = hiltViewModel()
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(24.dp)
-            .background(MaterialTheme.colorScheme.primary),
+        modifier = Modifier.background(MaterialTheme.colorScheme.primary)
+        .fillMaxSize()
+            .padding(24.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

@@ -21,8 +21,9 @@ import com.route.quickbuy.core.services.ConnectivityObserver
 import com.route.quickbuy.features.HomeBaseScreen
 import com.route.quickbuy.features.auth.screens.SignInScreen
 import com.route.quickbuy.features.auth.screens.SignUpScreen
+import com.route.quickbuy.features.cart.screens.CartScreen
 import com.route.quickbuy.features.products.screens.ProductDetailScreen
-import com.route.quickbuy.features.profile.screens.ProfileScreen
+import com.route.quickbuy.features.products.screens.ProductsScreen
 import com.route.quickbuy.features.splash.screens.SplashScreen
 import com.route.quickbuy.ui.theme.QuickBuyTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -106,7 +107,10 @@ fun AppNavHost() {
 
         }
         composable<ProfileDestination>() {
-            ProfileScreen()
+            ProductsScreen()
+        }
+        composable<CartDestination>() {
+            CartScreen()
         }
     }
 }

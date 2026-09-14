@@ -17,9 +17,9 @@ import com.route.quickbuy.ui.theme.primary
 @Composable
 fun AppBottomBar(selectedItem: BottomBarItems, onClick: (id: BottomBarItems) -> Unit) {
     Row(
-        modifier = Modifier.Companion
+        modifier = Modifier
             .fillMaxWidth()
-            .height(80.dp)
+            .height(60.dp)
             .border(
                 width = 1.dp,
                 color = primary,

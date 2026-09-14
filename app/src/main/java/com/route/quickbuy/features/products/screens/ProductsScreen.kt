@@ -1,30 +1,37 @@
 package com.route.quickbuy.features.products.screens
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemKey
 import com.route.domain.entities.ProductEntity
 import com.route.quickbuy.LocalConnectivityObserver
 import com.route.quickbuy.R
@@ -56,7 +63,6 @@ fun ProductsScreen(productsVM: ProductsViewModel = hiltViewModel()) {
 
         val products: LazyPagingItems<ProductEntity> =
             productsVM.productsFlow.collectAsLazyPagingItems()
-        var searchValue by remember { mutableStateOf("") }
 
         val state = productsVM.state
 
@@ -83,48 +89,93 @@ fun ProductsScreen(productsVM: ProductsViewModel = hiltViewModel()) {
                     Text(stringResource(R.string.no_data_found))
                     return@Column
                 }
-                Row {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     SearchField(
-                        onSearchChange = {
-                            searchValue = it
-                        },
-                        value = searchValue
+                        modifier = Modifier.weight(1f),
+                        onSearchChange = productsVM::onSearchQueryChanged,
+                        value = productsVM.searchValue
                     )
                     ShoppingCartHeaderIcon()
                 }
-                LazyVerticalGrid(
-                    modifier = Modifier
-                        .padding(vertical = 24.dp)
-                        .weight(1f)
-                        .fillMaxSize(),
-                    columns = GridCells.Adaptive(minSize = 150.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+
+                val isSearching = productsVM.isSearching
+                val isDebouncing = productsVM.isDebouncing
+                val filteredProducts: List<ProductEntity> = remember(
+                    productsVM.debouncedQuery,
+                    products.itemSnapshotList
                 ) {
-                    when (products.loadState.refresh) {
-                        is LoadState.Error -> {
-                            item {
-                                Text(
-                                    stringResource(R.string.error)
-                                )
-                            }
-                        }
+                    productsVM.filterProducts(products.itemSnapshotList.filterNotNull())
+                }
 
-                        is LoadState.Loading -> {
-                            item {
-                                CircularProgressIndicator()
-                            }
-                        }
+                val gridState = rememberLazyGridState()
+                val focusManager = LocalFocusManager.current
+                val keyboardController = LocalSoftwareKeyboardController.current
+                LaunchedEffect(gridState.isScrollInProgress) {
+                    if (gridState.isScrollInProgress) {
+                        focusManager.clearFocus()
+                        keyboardController?.hide()
+                    }
+                }
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier.weight(1f)
+                ) {
+                    if (isDebouncing) {
+                        CircularProgressIndicator()
+                    } else if (isSearching && filteredProducts.isEmpty()) {
+                        Text(
+                            stringResource(R.string.no_result),
+                            textAlign = TextAlign.Center,
+                            style = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.primary)
+                        )
 
-                        is LoadState.NotLoading -> items(
-                            products.itemCount,
-                        ) { index ->
-                            ProductCard(
-                                products[index]!!
-                            )
+                    } else {
+                        LazyVerticalGrid(
+                            state = gridState,
+                            modifier = Modifier
+                                .padding(vertical = 24.dp)
+
+                                .fillMaxSize(),
+                            columns = GridCells.Adaptive(minSize = 150.dp),
+                            verticalArrangement = Arrangement.spacedBy(16.dp),
+                            horizontalArrangement = Arrangement.spacedBy(16.dp)
+                        ) {
+                            if (isSearching) {
+                                items(filteredProducts) { product ->
+                                    ProductCard(product = product)
+                                }
+
+                            } else {
+                                when (products.loadState.refresh) {
+                                    is LoadState.Error -> {
+                                        item {
+                                            Text(
+                                                stringResource(R.string.error)
+                                            )
+                                        }
+                                    }
+
+                                    is LoadState.Loading -> {
+                                        item {
+                                            CircularProgressIndicator()
+                                        }
+                                    }
+
+                                    is LoadState.NotLoading -> items(
+                                        products.itemCount,
+                                        key = products.itemKey { it.id }
+                                    ) { index ->
+                                        ProductCard(
+                                            products[index]!!
+                                        )
+                                    }
+                                }
+                            }
                         }
                     }
-
                 }
             }
 

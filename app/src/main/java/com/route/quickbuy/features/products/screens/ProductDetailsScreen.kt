@@ -46,6 +46,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.route.quickbuy.R
@@ -132,7 +133,7 @@ fun ProductDetailScreen(id: String, viewModel: ProductDetailsViewModel = hiltVie
                                 .fillMaxSize(),
                             contentAlignment = Alignment.Center
                         ) {
-                            Text(state.toString())
+                            Text((state.value as ErrorState<*>).error)
                         }
                     }
 
@@ -151,7 +152,7 @@ fun ProductDetailScreen(id: String, viewModel: ProductDetailsViewModel = hiltVie
                         Column(
                             Modifier
                                 .padding(16.dp)
-                                .fillMaxSize(),
+                                .fillMaxWidth(),
                             verticalArrangement = Arrangement.Top,
                         ) {
 
@@ -204,10 +205,17 @@ fun ProductDetailScreen(id: String, viewModel: ProductDetailsViewModel = hiltVie
                                 }
                             }
 
-                            Row(modifier = Modifier.padding(vertical = 16.dp)) {
+                            Row(
+                                modifier = Modifier
+                                    .padding(vertical = 16.dp)
+                                    .fillMaxWidth(),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
                                 if (productDetails.title != null)
                                     Text(
                                         productDetails.title!!,
+                                        maxLines = 2,
+                                        overflow = TextOverflow.Ellipsis,
                                         modifier = Modifier.weight(1f),
                                         style = MaterialTheme.typography.titleMedium.copy(
                                             color = colorSchema.secondary

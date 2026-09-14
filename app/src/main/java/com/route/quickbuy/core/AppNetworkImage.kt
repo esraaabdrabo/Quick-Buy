@@ -1,6 +1,6 @@
 package com.route.quickbuy.core
 
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ErrorOutline
 import androidx.compose.material3.CircularProgressIndicator
@@ -27,15 +27,16 @@ fun AppNetworkImage(
         loading = {
             CircularProgressIndicator(
                 modifier = Modifier
-                    .width(24.dp)
-                    .align(Alignment.Center)
+                    .size(20.dp)
+                    .align(Alignment.Center),
+                strokeWidth = 2.dp
             )
         },
         error = {
             Icon(
                 Icons.Filled.ErrorOutline,
                 modifier = Modifier
-                    .width(24.dp),
+                    .size(24.dp),
                 contentDescription = "Error in loading the image",
                 tint = error,
             )
